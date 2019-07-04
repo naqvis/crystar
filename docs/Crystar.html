@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.28.0">
+
+
+<link href="css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "";
+</script>
+
+  <meta id="repository-name" content="github.com/naqvis/crystar">
+  <title>Crystar - github.com/naqvis/crystar</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="github.com/naqvis/crystar/Crystar" data-name="crystar">
+      <a href="Crystar.html">Crystar</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Error" data-name="crystar::error">
+      <a href="Crystar/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/ErrWriteTooLong" data-name="crystar::errwritetoolong">
+      <a href="Crystar/ErrWriteTooLong.html">ErrWriteTooLong</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Format" data-name="crystar::format">
+      <a href="Crystar/Format.html">Format</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Header" data-name="crystar::header">
+      <a href="Crystar/Header.html">Header</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/naqvis/crystar/Crystar/Reader" data-name="crystar::reader">
+      <a href="Crystar/Reader.html">Reader</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Reader/FileReader" data-name="crystar::reader::filereader">
+      <a href="Crystar/Reader/FileReader.html">FileReader</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/SparseDatas" data-name="crystar::sparsedatas">
+      <a href="Crystar/SparseDatas.html">SparseDatas</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/SparseEntry" data-name="crystar::sparseentry">
+      <a href="Crystar/SparseEntry.html">SparseEntry</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/SparseHoles" data-name="crystar::sparseholes">
+      <a href="Crystar/SparseHoles.html">SparseHoles</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Writer" data-name="crystar::writer">
+      <a href="Crystar/Writer.html">Writer</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">module</span> Crystar
+
+</h1>
+
+
+
+
+
+  <h2>Overview</h2>
+
+  <p><code><a href="Crystar.html">Crystar</a></code> module contains readers and writers for tar archive.
+Tape archives (tar) are a file format for storing a sequence of files that can be read and written in a streaming manner.
+This module aims to cover most variations of the format, including those produced by GNU and BSD tar tools.</p>
+
+<h3>Example</h3>
+
+<pre><code>files <span class="o">=</span> [
+  {<span class="s">&quot;readme.txt&quot;</span>, <span class="s">&quot;This archive contains some text files.&quot;</span>},
+  {<span class="s">&quot;minerals.txt&quot;</span>, <span class="s">&quot;Mineral names:\nalunite\nchromium\nvlasovite&quot;</span>},
+  {<span class="s">&quot;todo.txt&quot;</span>, <span class="s">&quot;Get crystal mining license.&quot;</span>},
+]
+buf <span class="o">=</span> <span class="t">IO</span><span class="t">::</span><span class="t">Memory</span>.<span class="k">new</span>
+<span class="t">Crystar</span><span class="t">::</span><span class="t">Writer</span>.open(buf) <span class="k">do</span> <span class="o">|</span>tw<span class="o">|</span>
+  files.each_with_index <span class="k">do</span> <span class="o">|</span>f, UNDERSCORE<span class="o">|</span>
+    hdr <span class="o">=</span> <span class="t">Header</span>.<span class="k">new</span>(
+      name: f[<span class="n">0</span>],
+      mode: <span class="n">0o600_i64</span>,
+      size: f[<span class="n">1</span>].size.to_i64
+    )
+    tw.write_header(hdr)
+    tw.write(f[<span class="n">1</span>].to_slice)
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c"># Open and iterate through the files in the archive</span>
+buf.pos <span class="o">=</span> <span class="n">0</span>
+<span class="t">Crystar</span><span class="t">::</span><span class="t">Reader</span>.open(buf) <span class="k">do</span> <span class="o">|</span>tar<span class="o">|</span>
+  tar.each_entry <span class="k">do</span> <span class="o">|</span>entry<span class="o">|</span>
+    p <span class="s">&quot;Contents of </span><span class="i">#{</span>entry.name<span class="i">}</span><span class="s">&quot;</span>
+    <span class="t">IO</span>.copy entry.io, <span class="t">STDOUT</span>
+    p <span class="s">&quot;\n&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+
+
+
+
+
+
+  <h2>Extended Modules</h2>
+  <ul class="other-types-list">
+  
+    <li class="other-type"><a href="Crystar.html">Crystar</a></li>
+  
+  </ul>
+
+
+
+
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/format.cr#L1" target="_blank">
+        tar/format.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L3" target="_blank">
+        tar/helper.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L4" target="_blank">
+        tar/header.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/reader.cr#L4" target="_blank">
+        tar/reader.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/writer.cr#L3" target="_blank">
+        tar/writer.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/crystar.cr#L37" target="_blank">
+        crystar.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+  
+    <h2>Constant Summary</h2>
+  
+  <dl>
+    
+      <dt class="entry-const" id="BASIC_KEYS">
+        <strong>BASIC_KEYS</strong> = <code>{<span class="t">PAX_PATH</span> => <span class="n">true</span>, <span class="t">PAX_LINK_PATH</span> => <span class="n">true</span>, <span class="t">PAX_SIZE</span> => <span class="n">true</span>, <span class="t">PAX_UID</span> => <span class="n">true</span>, <span class="t">PAX_GID</span> => <span class="n">true</span>, <span class="t">PAX_UNAME</span> => <span class="n">true</span>, <span class="t">PAX_GNAME</span> => <span class="n">true</span>, <span class="t">PAX_MTIME</span> => <span class="n">true</span>, <span class="t">PAX_ATIME</span> => <span class="n">true</span>, <span class="t">PAX_CTIME</span> => <span class="n">true</span>}</code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="BLOCK">
+        <strong>BLOCK</strong> = <code><span class="s">&#39;4&#39;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Character device node</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="BLOCK_SIZE">
+        <strong>BLOCK_SIZE</strong> = <code><span class="n">512</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="CHAR">
+        <strong>CHAR</strong> = <code><span class="s">&#39;3&#39;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Symbolic link</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="CONT">
+        <strong>CONT</strong> = <code><span class="s">&#39;7&#39;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="DIR">
+        <strong>DIR</strong> = <code><span class="s">&#39;5&#39;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Block device node</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="FIFO">
+        <strong>FIFO</strong> = <code><span class="s">&#39;6&#39;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Directory</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="GNU_LONGLINK">
+        <strong>GNU_LONGLINK</strong> = <code><span class="s">&#39;K&#39;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="GNU_LONGNAME">
+        <strong>GNU_LONGNAME</strong> = <code><span class="s">&#39;L&#39;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>'L' and 'K' are used by teh GNU format for a meta file
+used to store the path or link name for the next file.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="GNU_SPARSE">
+        <strong>GNU_SPARSE</strong> = <code><span class="s">&#39;S&#39;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Used by PAX format to key-value records that are relevant to all subsequent files.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="ISBLK">
+        <strong>ISBLK</strong> = <code><span class="n">24576</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Symbolic link</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="ISCHR">
+        <strong>ISCHR</strong> = <code><span class="n">8192</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Block special file</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="ISDIR">
+        <strong>ISDIR</strong> = <code><span class="n">16384</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Save text (sticky bit)
+Common Unix mode constants; these are not defined in any common tar standard.
+Header.FileInfo understands these, but FileInfoHeader will never produce these.
+Common Unix mode constants; these are not defined in any common tar standard.
+Header.FileInfo understands these, but FileInfoHeader will never produce these.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="ISFIFO">
+        <strong>ISFIFO</strong> = <code><span class="n">4096</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Directory</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="ISGID">
+        <strong>ISGID</strong> = <code><span class="n">1024</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Set uid</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="ISLINK">
+        <strong>ISLINK</strong> = <code><span class="n">40960</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Regular file</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="ISREG">
+        <strong>ISREG</strong> = <code><span class="n">32768</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>FIFO</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="ISSOCK">
+        <strong>ISSOCK</strong> = <code><span class="n">49152</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Character special file</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="ISUID">
+        <strong>ISUID</strong> = <code><span class="n">2048</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Mode constants from USTAR spec:
+See http://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_13_06</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="ISVTX">
+        <strong>ISVTX</strong> = <code><span class="n">512</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Set gid</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="LINK">
+        <strong>LINK</strong> = <code><span class="s">&#39;1&#39;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>'1' to '6' are header-only flags and may not have a data body.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="MAGIC_GNU">
+        <strong>MAGIC_GNU</strong> = <code><span class="s">&quot;ustar &quot;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Magics used to identify various formats.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="MAGIC_USTAR">
+        <strong>MAGIC_USTAR</strong> = <code><span class="s">&quot;ustar\u0000&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="MAX_NANO_SECOND_DIGITS">
+        <strong>MAX_NANO_SECOND_DIGITS</strong> = <code><span class="n">9</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="NAME_SIZE">
+        <strong>NAME_SIZE</strong> = <code><span class="n">100</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Size of each block in a tar stream</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="PADDING">
+        <strong>PADDING</strong> = <code><span class="n">3</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_ATIME">
+        <strong>PAX_ATIME</strong> = <code><span class="s">&quot;atime&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_CHARSET">
+        <strong>PAX_CHARSET</strong> = <code><span class="s">&quot;charset&quot;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Removed from later revision of PAX spec, but was valid</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="PAX_COMMENT">
+        <strong>PAX_COMMENT</strong> = <code><span class="s">&quot;comment&quot;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Currently unused</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="PAX_CTIME">
+        <strong>PAX_CTIME</strong> = <code><span class="s">&quot;ctime&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_GID">
+        <strong>PAX_GID</strong> = <code><span class="s">&quot;gid&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_GNAME">
+        <strong>PAX_GNAME</strong> = <code><span class="s">&quot;gname&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_GNU_SPARSE">
+        <strong>PAX_GNU_SPARSE</strong> = <code><span class="s">&quot;GNU.sparse.&quot;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Keywords for GNU sparse files in a PAX extended header.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="PAX_GNU_SPARSE_MAJOR">
+        <strong>PAX_GNU_SPARSE_MAJOR</strong> = <code><span class="s">&quot;GNU.sparse.major&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_GNU_SPARSE_MAP">
+        <strong>PAX_GNU_SPARSE_MAP</strong> = <code><span class="s">&quot;GNU.sparse.map&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_GNU_SPARSE_MINOR">
+        <strong>PAX_GNU_SPARSE_MINOR</strong> = <code><span class="s">&quot;GNU.sparse.minor&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_GNU_SPARSE_NAME">
+        <strong>PAX_GNU_SPARSE_NAME</strong> = <code><span class="s">&quot;GNU.sparse.name&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_GNU_SPARSE_NUMBLOCKS">
+        <strong>PAX_GNU_SPARSE_NUMBLOCKS</strong> = <code><span class="s">&quot;GNU.sparse.numblocks&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_GNU_SPARSE_NUMBYTES">
+        <strong>PAX_GNU_SPARSE_NUMBYTES</strong> = <code><span class="s">&quot;GNU.sparse.numbytes&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_GNU_SPARSE_OFFSET">
+        <strong>PAX_GNU_SPARSE_OFFSET</strong> = <code><span class="s">&quot;GNU.sparse.offset&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_GNU_SPARSE_REALSIZE">
+        <strong>PAX_GNU_SPARSE_REALSIZE</strong> = <code><span class="s">&quot;GNU.sparse.realsize&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_GNU_SPARSE_SIZE">
+        <strong>PAX_GNU_SPARSE_SIZE</strong> = <code><span class="s">&quot;GNU.sparse.size&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_LINK_PATH">
+        <strong>PAX_LINK_PATH</strong> = <code><span class="s">&quot;linkpath&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_MTIME">
+        <strong>PAX_MTIME</strong> = <code><span class="s">&quot;mtime&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_NONE">
+        <strong>PAX_NONE</strong> = <code><span class="s">&quot;&quot;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Keywords for PAX extended header records</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="PAX_PATH">
+        <strong>PAX_PATH</strong> = <code><span class="s">&quot;path&quot;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>indicates that no PAX key is suitable</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="PAX_SCHILY_XATTR">
+        <strong>PAX_SCHILY_XATTR</strong> = <code><span class="s">&quot;SCHILY.xattr.&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_SIZE">
+        <strong>PAX_SIZE</strong> = <code><span class="s">&quot;size&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_UID">
+        <strong>PAX_UID</strong> = <code><span class="s">&quot;uid&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PAX_UNAME">
+        <strong>PAX_UNAME</strong> = <code><span class="s">&quot;uname&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="PREFIX_SIZE">
+        <strong>PREFIX_SIZE</strong> = <code><span class="n">155</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Max length of the name in USTAR format</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="REG">
+        <strong>REG</strong> = <code><span class="s">&#39;0&#39;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Type flags for Header#flag</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="REGA">
+        <strong>REGA</strong> = <code><span class="s">&#39;\u{0}&#39;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="SYMLINK">
+        <strong>SYMLINK</strong> = <code><span class="s">&#39;2&#39;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Hard link</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="TRAILER_STAR">
+        <strong>TRAILER_STAR</strong> = <code><span class="s">&quot;tar\u0000&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="VERSION">
+        <strong>VERSION</strong> = <code><span class="s">&quot;0.1.0&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="VERSION_GNU">
+        <strong>VERSION_GNU</strong> = <code><span class="s">&quot; \u0000&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="VERSION_USTAR">
+        <strong>VERSION_USTAR</strong> = <code><span class="s">&quot;00&quot;</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="XGLOBAL_HEADER">
+        <strong>XGLOBAL_HEADER</strong> = <code><span class="s">&#39;g&#39;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Used by PAX format to store key-value records that are only relevant to the next file.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="XHEADER">
+        <strong>XHEADER</strong> = <code><span class="s">&#39;x&#39;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>reserved</p>
+      </dd>
+      
+    
+  </dl>
+
+
+
+
+
+  <h2>Class Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#parse_pax%28r%3AIO%29%3AHash%28String%2CString%29-class-method" class="signature"><strong>.parse_pax</strong>(r : IO) : Hash(String, String)</a>
+        
+          <div class="summary"><p>parse_pax parses PAX headers If an extended header (type 'x') is invalid, exception is raised</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#read_gnu_sparse_map0x1%28pax_hdrs%3AHash%28String%2CString%29%29-class-method" class="signature"><strong>.read_gnu_sparse_map0x1</strong>(pax_hdrs : Hash(String, String))</a>
+        
+          <div class="summary"><p>read_gnu_sparse_map0x1 reads the sparse map as stored in GNU's PAX sparse format version 0.1.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#read_gnu_sparse_map1x0%28r%3AIO%29-class-method" class="signature"><strong>.read_gnu_sparse_map1x0</strong>(r : IO)</a>
+        
+          <div class="summary"><p>read_gnu_sparse_map1x0 reads the sparse map as stored in GNU's PAX sparse format version 1.0.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#try_read_full%28r%3AIO%2Cb%3ABytes%29-class-method" class="signature"><strong>.try_read_full</strong>(r : IO, b : Bytes)</a>
+        
+          <div class="summary"><p>is like read_fully except it returns EOF when it is hit before b.size bytes are read</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <h2>Instance Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#align_sparse_entries%28src%3AArray%28SparseEntry%29%2Csize%3AInt64%29-instance-method" class="signature"><strong>#align_sparse_entries</strong>(src : Array(SparseEntry), size : Int64)</a>
+        
+          <div class="summary"><p>align_sparse_entries mutates src and returns dst where each fragment's starting offset is aligned up to the nearest block edge, and each ending offset is aligned down to the nearest block edge.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#block_padding%28offset%3AInt%29-instance-method" class="signature"><strong>#block_padding</strong>(offset : Int)</a>
+        
+          <div class="summary"><p>blockPadding computes the number of bytes needed to pad offset up to the nearest block edge where 0 &lt;= n &lt; blockSize.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#byte_index%28s%3AString%2Cc%3AChar%29-instance-method" class="signature"><strong>#byte_index</strong>(s : String, c : Char)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#byte_index%28bytes%3ABytes%2Cb%3AInt%29-instance-method" class="signature"><strong>#byte_index</strong>(bytes : Bytes, b : Int)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#file_info_header%28fi%3AFile%2Clink%3AString%29-instance-method" class="signature"><strong>#file_info_header</strong>(fi : File, link : String)</a>
+        
+          <div class="summary"><p>file_info_header creates a partially-populated Header from <em>fi</em>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#fits_in_base256%28n%3AInt32%2Cx%3AInt64%29-instance-method" class="signature"><strong>#fits_in_base256</strong>(n : Int32, x : Int64)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#fits_in_octal%28n%3AInt32%2Cx%3AInt64%29-instance-method" class="signature"><strong>#fits_in_octal</strong>(n : Int32, x : Int64)</a>
+        
+          <div class="summary"><p>fits_in_octal reports whether the integer x fits in a field n-bytes long using octal encoding with the appropriate NUL terminator.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#format_pax_record%28k%3AString%2Cv%3AString%29-instance-method" class="signature"><strong>#format_pax_record</strong>(k : String, v : String)</a>
+        
+          <div class="summary"><p>format_pax_record formats a single PAX record, prefixing it with the appropriate length</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#format_pax_time%28ts%3ATime%29-instance-method" class="signature"><strong>#format_pax_time</strong>(ts : Time)</a>
+        
+          <div class="summary"><p>format_pax_time converts ts into a time of the form %d.%d as described in the PAX specification.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#has_nul%28s%3AString%29-instance-method" class="signature"><strong>#has_nul</strong>(s : String)</a>
+        
+          <div class="summary"><p>checks whether NUL character exists within s</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#header_only_type%3F%28flag%29-instance-method" class="signature"><strong>#header_only_type?</strong>(flag)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#invert_sparse_entries%28src%3AArray%28SparseEntry%29%2Csize%3AInt64%29-instance-method" class="signature"><strong>#invert_sparse_entries</strong>(src : Array(SparseEntry), size : Int64)</a>
+        
+          <div class="summary"><p>invert_sparse_entries converts a sparse map from one form to the other.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#ltrim%28b%3ABytes%2Cs%3AString%29-instance-method" class="signature"><strong>#ltrim</strong>(b : Bytes, s : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#merge_pax%28hdr%3AHeader%2Cpax_hdrs%3AHash%28String%2CString%29%29-instance-method" class="signature"><strong>#merge_pax</strong>(hdr : Header, pax_hdrs : Hash(String, String))</a>
+        
+          <div class="summary"><p>merg_pax merges paxHdrs into hdr for all relevant fields of Header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#parse_pax_record%28s%3AString%29%3A%3A%3ATuple%28String%2CString%2CString%29-instance-method" class="signature"><strong>#parse_pax_record</strong>(s : String) : ::Tuple(String, String, String)</a>
+        
+          <div class="summary"><p>parse_pax_record parses the input PAX record string into a key-value pair.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#parse_pax_time%28s%3AString%29-instance-method" class="signature"><strong>#parse_pax_time</strong>(s : String)</a>
+        
+          <div class="summary"><p>parse_pax_time takes a string of the form %d.%d as described in the PAX specification.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#rtrim%28b%3ABytes%2Cs%3AString%29-instance-method" class="signature"><strong>#rtrim</strong>(b : Bytes, s : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#split_ustar_path%28name%3AString%29-instance-method" class="signature"><strong>#split_ustar_path</strong>(name : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_ascii%28s%3AString%29-instance-method" class="signature"><strong>#to_ascii</strong>(s : String)</a>
+        
+          <div class="summary"><p>to_ascii converts the input to an ASCII C-style string.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#trim_bytes%28b%3ABytes%2Cs%3AString%29-instance-method" class="signature"><strong>#trim_bytes</strong>(b : Bytes, s : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#unix_time%28sec%3AInt%2Cnsec%3AInt%29-instance-method" class="signature"><strong>#unix_time</strong>(sec : Int, nsec : Int)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#unix_time%28sec%2Cnsec%29-instance-method" class="signature"><strong>#unix_time</strong>(sec, nsec)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#valid_pax_record%28k%3AString%2Cv%3AString%29-instance-method" class="signature"><strong>#valid_pax_record</strong>(k : String, v : String)</a>
+        
+          <div class="summary"><p>valid_pax_record reports whether the key-value pair is valid where each record is formatted as: 	"%d %s=%s\n" % (size, key, value)</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#validate_sparse_entries%28sp%3AArray%28SparseEntry%29%2Csize%3AInt64%29-instance-method" class="signature"><strong>#validate_sparse_entries</strong>(sp : Array(SparseEntry), size : Int64)</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+</div>
+
+
+
+
+  <h2>Class Method Detail</h2>
+  
+    <div class="entry-detail" id="parse_pax(r:IO):Hash(String,String)-class-method">
+      <div class="signature">
+        
+        def self.<strong>parse_pax</strong>(r : IO) : Hash(String, String)
+
+        <a class="method-permalink" href="#parse_pax%28r%3AIO%29%3AHash%28String%2CString%29-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>parse_pax parses PAX headers
+If an extended header (type 'x') is invalid, exception is raised</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/reader.cr#L555" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="read_gnu_sparse_map0x1(pax_hdrs:Hash(String,String))-class-method">
+      <div class="signature">
+        
+        def self.<strong>read_gnu_sparse_map0x1</strong>(pax_hdrs : Hash(String, String))
+
+        <a class="method-permalink" href="#read_gnu_sparse_map0x1%28pax_hdrs%3AHash%28String%2CString%29%29-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>read_gnu_sparse_map0x1 reads the sparse map as stored in GNU's PAX sparse format
+version 0.1. The sparse map is stored in the PAX headers.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/reader.cr#L648" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="read_gnu_sparse_map1x0(r:IO)-class-method">
+      <div class="signature">
+        
+        def self.<strong>read_gnu_sparse_map1x0</strong>(r : IO)
+
+        <a class="method-permalink" href="#read_gnu_sparse_map1x0%28r%3AIO%29-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>read_gnu_sparse_map1x0 reads the sparse map as stored in GNU's PAX sparse format
+version 1.0. The format of the sparse map consists of a series of
+newline-terminated numeric fields. The first field is the number of entries
+and is always present. Following this are the entries, consisting of two
+fields (offset, length). This function must stop reading at the end
+boundary of the block containing the last newline.</p>
+
+<p>Note that the GNU manual says that numeric values should be encoded in octal
+format. However, the GNU tar utility itself outputs these values in decimal.
+As such, this library treats values as being encoded in decimal.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/reader.cr#L596" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="try_read_full(r:IO,b:Bytes)-class-method">
+      <div class="signature">
+        
+        def self.<strong>try_read_full</strong>(r : IO, b : Bytes)
+
+        <a class="method-permalink" href="#try_read_full%28r%3AIO%2Cb%3ABytes%29-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>is like read_fully except it returns
+EOF when it is hit before b.size bytes are read</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/reader.cr#L680" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+  <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="align_sparse_entries(src:Array(SparseEntry),size:Int64)-instance-method">
+      <div class="signature">
+        
+        def <strong>align_sparse_entries</strong>(src : Array(<a href="Crystar/SparseEntry.html">SparseEntry</a>), size : Int64)
+
+        <a class="method-permalink" href="#align_sparse_entries%28src%3AArray%28SparseEntry%29%2Csize%3AInt64%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>align_sparse_entries mutates src and returns dst where each fragment's
+starting offset is aligned up to the nearest block edge, and each
+ending offset is aligned down to the nearest block edge.</p>
+
+<p>Even though the Crystar Reader and the BSD tar utility can handle entries
+with arbitrary offsets and lengths, the GNU tar utility can only handle
+offsets and lengths that are multiples of blockSize.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L379" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="block_padding(offset:Int)-instance-method">
+      <div class="signature">
+        
+        def <strong>block_padding</strong>(offset : Int)
+
+        <a class="method-permalink" href="#block_padding%28offset%3AInt%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>blockPadding computes the number of bytes needed to pad offset up to the
+nearest block edge where 0 &lt;= n &lt; blockSize.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/format.cr#L120" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="byte_index(s:String,c:Char)-instance-method">
+      <div class="signature">
+        
+        def <strong>byte_index</strong>(s : String, c : Char)
+
+        <a class="method-permalink" href="#byte_index%28s%3AString%2Cc%3AChar%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L193" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="byte_index(bytes:Bytes,b:Int)-instance-method">
+      <div class="signature">
+        
+        def <strong>byte_index</strong>(bytes : Bytes, b : Int)
+
+        <a class="method-permalink" href="#byte_index%28bytes%3ABytes%2Cb%3AInt%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L184" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="file_info_header(fi:File,link:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>file_info_header</strong>(fi : File, link : String)
+
+        <a class="method-permalink" href="#file_info_header%28fi%3AFile%2Clink%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>file_info_header creates a partially-populated Header from <em>fi</em>.
+If <em>fi</em> describes a symlink, this records link as the link target.
+If <em>fi</em> describes a directory, a slash is appended to the name.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L492" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="fits_in_base256(n:Int32,x:Int64)-instance-method">
+      <div class="signature">
+        
+        def <strong>fits_in_base256</strong>(n : Int32, x : Int64)
+
+        <a class="method-permalink" href="#fits_in_base256%28n%3AInt32%2Cx%3AInt64%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L60" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="fits_in_octal(n:Int32,x:Int64)-instance-method">
+      <div class="signature">
+        
+        def <strong>fits_in_octal</strong>(n : Int32, x : Int64)
+
+        <a class="method-permalink" href="#fits_in_octal%28n%3AInt32%2Cx%3AInt64%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>fits_in_octal reports whether the integer x fits in a field n-bytes long
+using octal encoding with the appropriate NUL terminator.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L67" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="format_pax_record(k:String,v:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>format_pax_record</strong>(k : String, v : String)
+
+        <a class="method-permalink" href="#format_pax_record%28k%3AString%2Cv%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>format_pax_record formats a single PAX record, prefixing it with the
+appropriate length</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L152" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="format_pax_time(ts:Time)-instance-method">
+      <div class="signature">
+        
+        def <strong>format_pax_time</strong>(ts : Time)
+
+        <a class="method-permalink" href="#format_pax_time%28ts%3ATime%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>format_pax_time converts ts into a time of the form %d.%d as described in the
+PAX specification. This function is capable of negative timestamps.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L108" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="has_nul(s:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>has_nul</strong>(s : String)
+
+        <a class="method-permalink" href="#has_nul%28s%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>checks whether NUL character exists within s</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L10" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="header_only_type?(flag)-instance-method">
+      <div class="signature">
+        
+        def <strong>header_only_type?</strong>(flag)
+
+        <a class="method-permalink" href="#header_only_type%3F%28flag%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L412" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="invert_sparse_entries(src:Array(SparseEntry),size:Int64)-instance-method">
+      <div class="signature">
+        
+        def <strong>invert_sparse_entries</strong>(src : Array(<a href="Crystar/SparseEntry.html">SparseEntry</a>), size : Int64)
+
+        <a class="method-permalink" href="#invert_sparse_entries%28src%3AArray%28SparseEntry%29%2Csize%3AInt64%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>invert_sparse_entries converts a sparse map from one form to the other.
+If the input is sparseHoles, then it will output sparseDatas and vice-versa.
+The input must have been already validated.</p>
+
+<p>This function mutates src and returns a normalized map where:</p>
+
+<ul><li>adjacent fragments are coalesced together</li><li>only the last fragment may be empty</li><li>the endOffset of the last fragment is the total size</li></ul></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L398" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="ltrim(b:Bytes,s:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>ltrim</strong>(b : Bytes, s : String)
+
+        <a class="method-permalink" href="#ltrim%28b%3ABytes%2Cs%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L197" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="merge_pax(hdr:Header,pax_hdrs:Hash(String,String))-instance-method">
+      <div class="signature">
+        
+        def <strong>merge_pax</strong>(hdr : <a href="Crystar/Header.html">Header</a>, pax_hdrs : Hash(String, String))
+
+        <a class="method-permalink" href="#merge_pax%28hdr%3AHeader%2Cpax_hdrs%3AHash%28String%2CString%29%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>merg_pax merges paxHdrs into hdr for all relevant fields of Header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/reader.cr#L520" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="parse_pax_record(s:String):::Tuple(String,String,String)-instance-method">
+      <div class="signature">
+        
+        def <strong>parse_pax_record</strong>(s : String) : ::Tuple(String, String, String)
+
+        <a class="method-permalink" href="#parse_pax_record%28s%3AString%29%3A%3A%3ATuple%28String%2CString%2CString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>parse_pax_record parses the input PAX record string into a key-value pair.
+If parsing is successful, it will slice off the currently read record and
+return the remainder as r.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L125" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="parse_pax_time(s:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>parse_pax_time</strong>(s : String)
+
+        <a class="method-permalink" href="#parse_pax_time%28s%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>parse_pax_time takes a string of the form %d.%d as described in the PAX
+specification. Note that this implementation allows for negative timestamps,
+which is allowed for by the PAX specification, but not always portable.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L75" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="rtrim(b:Bytes,s:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>rtrim</strong>(b : Bytes, s : String)
+
+        <a class="method-permalink" href="#rtrim%28b%3ABytes%2Cs%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L209" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="split_ustar_path(name:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>split_ustar_path</strong>(name : String)
+
+        <a class="method-permalink" href="#split_ustar_path%28name%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L32" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_ascii(s:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>to_ascii</strong>(s : String)
+
+        <a class="method-permalink" href="#to_ascii%28s%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>to_ascii converts the input to an ASCII C-style string.
+This a best effort conversion, so invalid characters are dropped.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L16" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="trim_bytes(b:Bytes,s:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>trim_bytes</strong>(b : Bytes, s : String)
+
+        <a class="method-permalink" href="#trim_bytes%28b%3ABytes%2Cs%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L222" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="unix_time(sec:Int,nsec:Int)-instance-method">
+      <div class="signature">
+        
+        def <strong>unix_time</strong>(sec : Int, nsec : Int)
+
+        <a class="method-permalink" href="#unix_time%28sec%3AInt%2Cnsec%3AInt%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L226" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="unix_time(sec,nsec)-instance-method">
+      <div class="signature">
+        
+        def <strong>unix_time</strong>(sec, nsec)
+
+        <a class="method-permalink" href="#unix_time%28sec%2Cnsec%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L231" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="valid_pax_record(k:String,v:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>valid_pax_record</strong>(k : String, v : String)
+
+        <a class="method-permalink" href="#valid_pax_record%28k%3AString%2Cv%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>valid_pax_record reports whether the key-value pair is valid where each
+record is formatted as:
+	"%d %s=%s\n" % (size, key, value)</p>
+
+<p>Keys and values should be UTF-8, but the number of bad writers out there
+forces us to be a more liberal.
+Thus, we only reject all keys with NUL, and only reject NULs in values
+for the PAX version of the USTAR string fields.
+The key must not contain an '=' character.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/helper.cr#L174" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="validate_sparse_entries(sp:Array(SparseEntry),size:Int64)-instance-method">
+      <div class="signature">
+        
+        def <strong>validate_sparse_entries</strong>(sp : Array(<a href="Crystar/SparseEntry.html">SparseEntry</a>), size : Int64)
+
+        <a class="method-permalink" href="#validate_sparse_entries%28sp%3AArray%28SparseEntry%29%2Csize%3AInt64%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L353" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>
