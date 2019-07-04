@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/naqvis/crystar.svg?branch=master)](https://travis-ci.org/naqvis/crystar)
 [![GitHub release](https://img.shields.io/github/release/naqvis/crystar.svg)](https://github.com/naqvis/crystar/releases)
+[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://naqvis.github.io/crystar/)
 
 # Crystal Tar (Crystar)
 
