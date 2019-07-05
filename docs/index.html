@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.28.0">
+
+
+<link href="css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "";
+</script>
+
+  <meta id="repository-name" content="github.com/naqvis/crystar">
+  <title>README - github.com/naqvis/crystar</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent " data-id="github.com/naqvis/crystar/Crystar" data-name="crystar">
+      <a href="Crystar.html">Crystar</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Error" data-name="crystar::error">
+      <a href="Crystar/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/ErrWriteTooLong" data-name="crystar::errwritetoolong">
+      <a href="Crystar/ErrWriteTooLong.html">ErrWriteTooLong</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Format" data-name="crystar::format">
+      <a href="Crystar/Format.html">Format</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Header" data-name="crystar::header">
+      <a href="Crystar/Header.html">Header</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/naqvis/crystar/Crystar/Reader" data-name="crystar::reader">
+      <a href="Crystar/Reader.html">Reader</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Reader/FileReader" data-name="crystar::reader::filereader">
+      <a href="Crystar/Reader/FileReader.html">FileReader</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/SparseDatas" data-name="crystar::sparsedatas">
+      <a href="Crystar/SparseDatas.html">SparseDatas</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/SparseEntry" data-name="crystar::sparseentry">
+      <a href="Crystar/SparseEntry.html">SparseEntry</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/SparseHoles" data-name="crystar::sparseholes">
+      <a href="Crystar/SparseHoles.html">SparseHoles</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Writer" data-name="crystar::writer">
+      <a href="Crystar/Writer.html">Writer</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<p><a href="https://travis-ci.org/naqvis/crystar" target="_blank"><img src="https://travis-ci.org/naqvis/crystar.svg?branch=master" alt="Build Status"/></a>
+<a href="https://github.com/naqvis/crystar/releases" target="_blank"><img src="https://img.shields.io/github/release/naqvis/crystar.svg" alt="GitHub release"/></a></p>
+
+<h1>Crystal Tar (Crystar)</h1>
+
+<p>Shard <code><a href="Crystar.html">Crystar</a></code> implements access to tar archives. </p>
+
+<p><em>No external library needed.</em> This is written in <strong>pure Crystal</strong>.</p>
+
+<p>Tape archives (tar) are a file format for storing a sequence of files that can be read and written in a streaming manner. This shard aims to cover most variations of the format, including those produced by <strong>GNU</strong> and <strong>BSD</strong> tar tools. </p>
+
+<p>This module is mostly based on <a href="https://golang.google.cn/pkg/archive/tar/" target="_blank"><code>Tar</code></a> package implementation of <a href="http://golang.org/" target="_blank">Golang</a></p>
+
+<p>Format represents the tar archive format.</p>
+
+<p>The original tar format was introduced in Unix V7.
+  Since then, there have been multiple competing formats attempting to
+  standardize or extend the <strong>V7</strong> format to overcome its limitations.
+  The most common formats are the <strong>USTAR</strong>, <strong>PAX</strong>, and <strong>GNU</strong> formats,
+  each with their own advantages and limitations.</p>
+
+<p>The following table captures the capabilities of each format:</p>
+
+<p>|  USTAR |       PAX |       GNU
+  	------------------+--------+-----------+----------
+  	Name              |   256B | unlimited | unlimited
+  	Linkname          |   100B | unlimited | unlimited
+  	Size              | uint33 | unlimited |    uint89
+  	Mode              | uint21 |    uint21 |    uint57
+  	Uid/Gid           | uint21 | unlimited |    uint57
+  	Uname/Gname       |    32B | unlimited |       32B
+  	ModTime           | uint33 | unlimited |     int89
+  	AccessTime        |    n/a | unlimited |     int89
+  	ChangeTime        |    n/a | unlimited |     int89
+  	Devmajor/Devminor | uint21 |    uint21 |    uint57
+  	------------------+--------+-----------+----------
+  	string encoding   |  ASCII |     UTF-8 |    binary
+  	sub-second times  |     no |       yes |        no
+  	sparse files      |     no |       yes |       yes</p>
+
+<p>The table's upper portion shows the Header fields, where each format reports
+  the maximum number of bytes allowed for each string field and
+  the integer type used to store each numeric field
+  (where timestamps are stored as the number of seconds since the Unix epoch).</p>
+
+<p>The table's lower portion shows specialized features of each format,
+  such as supported string encodings, support for sub-second timestamps,
+  or support for sparse files.</p>
+
+<p>The <code>Writer</code> currently provides <strong>no support</strong> for <em>sparse files</em>.</p>
+
+<h2>Installation</h2>
+
+<ol><li>Add the dependency to your <code>shard.yml</code>:</li></ol>
+
+<p><code></code>`yaml
+   dependencies:</p>
+
+<pre><code> crystar:
+   github: naqvis<span class="s">/crystar</code></pre>
+
+<p><code></code>`</p>
+
+<ol><li>Run <code>shards install</code></li></ol>
+
+<h2>Usage</h2>
+
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;crystar&quot;</span></code></pre>
+
+<p><code><a href="Crystar.html">Crystar</a></code> module contains readers and writers for tar archive.
+Tape archives (tar) are a file format for storing a sequence of files that can be read and written in a streaming manner.
+This module aims to cover most variations of the format, including those produced by GNU and BSD tar tools.</p>
+
+<h2>Sample Usage</h2>
+
+<pre><code class="language-crystal">files <span class="o">=</span> [
+  {<span class="s">&quot;readme.txt&quot;</span>, <span class="s">&quot;This archive contains some text files.&quot;</span>},
+  {<span class="s">&quot;minerals.txt&quot;</span>, <span class="s">&quot;Mineral names:\nalunite\nchromium\nvlasovite&quot;</span>},
+  {<span class="s">&quot;todo.txt&quot;</span>, <span class="s">&quot;Get crystal mining license.&quot;</span>},
+]
+
+buf <span class="o">=</span> <span class="t">IO</span><span class="t">::</span><span class="t">Memory</span>.<span class="k">new</span>
+<span class="t">Crystar</span><span class="t">::</span><span class="t">Writer</span>.open(buf) <span class="k">do</span> <span class="o">|</span>tw<span class="o">|</span>
+  files.each_with_index <span class="k">do</span> <span class="o">|</span>f, UNDERSCORE<span class="o">|</span>
+    hdr <span class="o">=</span> <span class="t">Header</span>.<span class="k">new</span>(
+      name: f[<span class="n">0</span>],
+      mode: <span class="n">0o600_i64</span>,
+      size: f[<span class="n">1</span>].size.to_i64
+    )
+    tw.write_header(hdr)
+    tw.write(f[<span class="n">1</span>].to_slice)
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="c">#Open and iterate through the files in the archive</span>
+buf.pos <span class="o">=</span> <span class="n">0</span>
+<span class="t">Crystar</span><span class="t">::</span><span class="t">Reader</span>.open(buf) <span class="k">do</span> <span class="o">|</span>tar<span class="o">|</span>
+  tar.each_entry <span class="k">do</span> <span class="o">|</span>entry<span class="o">|</span>
+    p <span class="s">&quot;Contents of </span><span class="i">#{</span>entry.name<span class="i">}</span><span class="s">&quot;</span>
+    <span class="t">IO</span>.copy entry.io, <span class="t">STDOUT</span>
+    p <span class="s">&quot;\n&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<p>Refer to <code><a href="Crystar/Reader.html">Crystar::Reader</a></code> and <code><a href="Crystar/Writer.html">Crystar::Writer</a></code> module for documentation on detailed usage.</p>
+
+<h1>Development</h1>
+
+<p>To run all tests:</p>
+
+<pre><code>crystal spec</code></pre>
+
+<h1>Contributing</h1>
+
+<ol><li>Fork it (&lt;https://github.com/naqvis/crystar/fork>)</li><li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li><li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li><li>Push to the branch (<code>git push origin my-new-feature</code>)</li><li>Create a new Pull Request</li></ol>
+
+<h1>Contributors</h1>
+
+<ul><li><a href="https://github.com/naqvis" target="_blank">Ali Naqvi</a> - creator and maintainer</li></ul>
+</div>
+</body>
+</html>

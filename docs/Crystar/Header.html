@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.28.0">
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../";
+</script>
+
+  <meta id="repository-name" content="github.com/naqvis/crystar">
+  <title>Crystar::Header - github.com/naqvis/crystar</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="github.com/naqvis/crystar/Crystar" data-name="crystar">
+      <a href="../Crystar.html">Crystar</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Error" data-name="crystar::error">
+      <a href="../Crystar/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/ErrWriteTooLong" data-name="crystar::errwritetoolong">
+      <a href="../Crystar/ErrWriteTooLong.html">ErrWriteTooLong</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Format" data-name="crystar::format">
+      <a href="../Crystar/Format.html">Format</a>
+      
+    </li>
+  
+  <li class=" current" data-id="github.com/naqvis/crystar/Crystar/Header" data-name="crystar::header">
+      <a href="../Crystar/Header.html">Header</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/naqvis/crystar/Crystar/Reader" data-name="crystar::reader">
+      <a href="../Crystar/Reader.html">Reader</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Reader/FileReader" data-name="crystar::reader::filereader">
+      <a href="../Crystar/Reader/FileReader.html">FileReader</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/SparseDatas" data-name="crystar::sparsedatas">
+      <a href="../Crystar/SparseDatas.html">SparseDatas</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/SparseEntry" data-name="crystar::sparseentry">
+      <a href="../Crystar/SparseEntry.html">SparseEntry</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/SparseHoles" data-name="crystar::sparseholes">
+      <a href="../Crystar/SparseHoles.html">SparseHoles</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Writer" data-name="crystar::writer">
+      <a href="../Crystar/Writer.html">Writer</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> Crystar::Header
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../Crystar/Header.html">Crystar::Header</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L15" target="_blank">
+        tar/header.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  <h2>Constructors</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28flag%3D0_u8%2Cname%3D%26quot%3B%26quot%3B%2Clink_name%3D%26quot%3B%26quot%3B%2Csize%3D0_i64%2Cmode%3D0_i64%2Cuid%3D0%2Cgid%3D0%2Cuname%3D%26quot%3B%26quot%3B%2Cgname%3D%26quot%3B%26quot%3B%2Cmod_time%3DCrystar.unix_time%280%2C0%29%2Caccess_time%3DCrystar.unix_time%280%2C0%29%2Cchange_time%3DCrystar.unix_time%280%2C0%29%2Cdev_major%3D0_i64%2Cdev_minor%3D0_i64%2Cxattr%3DHash%28String%2CString%29.new%2Cpax_records%3DHash%28String%2CString%29.new%2Cformat%3DFormat%3A%3ANone%2Cio%3DIO%3A%3AMemory.new%29-class-method" class="signature"><strong>.new</strong>(flag = <span class="n">0_u8</span>, name = <span class="s">&quot;&quot;</span>, link_name = <span class="s">&quot;&quot;</span>, size = <span class="n">0_i64</span>, mode = <span class="n">0_i64</span>, uid = <span class="n">0</span>, gid = <span class="n">0</span>, uname = <span class="s">&quot;&quot;</span>, gname = <span class="s">&quot;&quot;</span>, mod_time = <span class="t">Crystar</span>.unix_time(<span class="n">0</span>, <span class="n">0</span>), access_time = <span class="t">Crystar</span>.unix_time(<span class="n">0</span>, <span class="n">0</span>), change_time = <span class="t">Crystar</span>.unix_time(<span class="n">0</span>, <span class="n">0</span>), dev_major = <span class="n">0_i64</span>, dev_minor = <span class="n">0_i64</span>, xattr = <span class="t">Hash</span>(<span class="t">String</span>, <span class="t">String</span>).<span class="k">new</span>, pax_records = <span class="t">Hash</span>(<span class="t">String</span>, <span class="t">String</span>).<span class="k">new</span>, format = <span class="t">Format</span><span class="t">::</span><span class="t">None</span>, io = <span class="t">IO</span><span class="t">::</span><span class="t">Memory</span>.<span class="k">new</span>)</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+  <h2>Instance Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#%3D%3D%28other%3Aself%29-instance-method" class="signature"><strong>#==</strong>(other : <span class="k">self</span>)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#access_time%3ATime-instance-method" class="signature"><strong>#access_time</strong> : Time</a>
+        
+          <div class="summary"><p>Modification time</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#access_time%3D%28access_time%3ATime%29-instance-method" class="signature"><strong>#access_time=</strong>(access_time : Time)</a>
+        
+          <div class="summary"><p>Modification time</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#change_time%3ATime-instance-method" class="signature"><strong>#change_time</strong> : Time</a>
+        
+          <div class="summary"><p>Access time (requires either PAX or GNU support)</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#change_time%3D%28change_time%3ATime%29-instance-method" class="signature"><strong>#change_time=</strong>(change_time : Time)</a>
+        
+          <div class="summary"><p>Access time (requires either PAX or GNU support)</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#dev_major%3AInt64-instance-method" class="signature"><strong>#dev_major</strong> : Int64</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#dev_major%3D%28dev_major%3AInt64%29-instance-method" class="signature"><strong>#dev_major=</strong>(dev_major : Int64)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#dev_minor%3AInt64-instance-method" class="signature"><strong>#dev_minor</strong> : Int64</a>
+        
+          <div class="summary"><p>Major device number (valid for CHAR or BLOCK)</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#dev_minor%3D%28dev_minor%3AInt64%29-instance-method" class="signature"><strong>#dev_minor=</strong>(dev_minor : Int64)</a>
+        
+          <div class="summary"><p>Major device number (valid for CHAR or BLOCK)</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#file_info-instance-method" class="signature"><strong>#file_info</strong></a>
+        
+          <div class="summary"><p>file_info returns an File::Info for the header</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#flag%3AUInt8-instance-method" class="signature"><strong>#flag</strong> : UInt8</a>
+        
+          <div class="summary"><p>Typeflag is the type of header entry.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#flag%3D%28flag%3AUInt8%29-instance-method" class="signature"><strong>#flag=</strong>(flag : UInt8)</a>
+        
+          <div class="summary"><p>Typeflag is the type of header entry.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#flag%3D%28v%3AInt%29-instance-method" class="signature"><strong>#flag=</strong>(v : Int)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#format%3AFormat-instance-method" class="signature"><strong>#format</strong> : Format</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#format%3D%28format%3AFormat%29-instance-method" class="signature"><strong>#format=</strong>(format : Format)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#gid%3AInt32-instance-method" class="signature"><strong>#gid</strong> : Int32</a>
+        
+          <div class="summary"><p>User ID of owner</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#gid%3D%28gid%3AInt32%29-instance-method" class="signature"><strong>#gid=</strong>(gid : Int32)</a>
+        
+          <div class="summary"><p>User ID of owner</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#gid%3D%28v%3AInt%29-instance-method" class="signature"><strong>#gid=</strong>(v : Int)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#gname%3AString-instance-method" class="signature"><strong>#gname</strong> : String</a>
+        
+          <div class="summary"><p>User name of owner</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#gname%3D%28gname%3AString%29-instance-method" class="signature"><strong>#gname=</strong>(gname : String)</a>
+        
+          <div class="summary"><p>User name of owner</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#hash%28hasher%29-instance-method" class="signature"><strong>#hash</strong>(hasher)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#io%3AIO-instance-method" class="signature"><strong>#io</strong> : IO</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#link_name%3AString-instance-method" class="signature"><strong>#link_name</strong> : String</a>
+        
+          <div class="summary"><p>Name of file entry</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#link_name%3D%28link_name%3AString%29-instance-method" class="signature"><strong>#link_name=</strong>(link_name : String)</a>
+        
+          <div class="summary"><p>Name of file entry</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#mod_time%3ATime-instance-method" class="signature"><strong>#mod_time</strong> : Time</a>
+        
+          <div class="summary"><p>If the Format is unspecified, then Writer.WriteHeader rounds ModTime to the nearest second and ignores the AccessTime and ChangeTime fields.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#mod_time%3D%28mod_time%3ATime%29-instance-method" class="signature"><strong>#mod_time=</strong>(mod_time : Time)</a>
+        
+          <div class="summary"><p>If the Format is unspecified, then Writer.WriteHeader rounds ModTime to the nearest second and ignores the AccessTime and ChangeTime fields.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#mode%3AInt64-instance-method" class="signature"><strong>#mode</strong> : Int64</a>
+        
+          <div class="summary"><p>Logical file size in bytes</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#mode%3D%28mode%3AInt64%29-instance-method" class="signature"><strong>#mode=</strong>(mode : Int64)</a>
+        
+          <div class="summary"><p>Logical file size in bytes</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#name%3AString-instance-method" class="signature"><strong>#name</strong> : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#name%3D%28name%3AString%29-instance-method" class="signature"><strong>#name=</strong>(name : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#pax_records%3AHash%28String%2CString%29-instance-method" class="signature"><strong>#pax_records</strong> : Hash(String, String)</a>
+        
+          <div class="summary"><p>PAXRecords is a map of PAX extended header records.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#pax_records%3D%28pax_records%3AHash%28String%2CString%29%29-instance-method" class="signature"><strong>#pax_records=</strong>(pax_records : Hash(String, String))</a>
+        
+          <div class="summary"><p>PAXRecords is a map of PAX extended header records.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#size%3AInt64-instance-method" class="signature"><strong>#size</strong> : Int64</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#size%3D%28size%3AInt64%29-instance-method" class="signature"><strong>#size=</strong>(size : Int64)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#size%3D%28v%3AInt%29-instance-method" class="signature"><strong>#size=</strong>(v : Int)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#uid%3AInt32-instance-method" class="signature"><strong>#uid</strong> : Int32</a>
+        
+          <div class="summary"><p>Permission and mode bits</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#uid%3D%28v%3AInt%29-instance-method" class="signature"><strong>#uid=</strong>(v : Int)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#uid%3D%28uid%3AInt32%29-instance-method" class="signature"><strong>#uid=</strong>(uid : Int32)</a>
+        
+          <div class="summary"><p>Permission and mode bits</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#uname%3AString-instance-method" class="signature"><strong>#uname</strong> : String</a>
+        
+          <div class="summary"><p>Group ID of owner</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#uname%3D%28uname%3AString%29-instance-method" class="signature"><strong>#uname=</strong>(uname : String)</a>
+        
+          <div class="summary"><p>Group ID of owner</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#xattr%3AHash%28String%2CString%29-instance-method" class="signature"><strong>#xattr</strong> : Hash(String, String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#xattr%3D%28xattr%3AHash%28String%2CString%29%29-instance-method" class="signature"><strong>#xattr=</strong>(xattr : Hash(String, String))</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>Constructor Detail</h2>
+  
+    <div class="entry-detail" id="new(flag=0_u8,name=&amp;quot;&amp;quot;,link_name=&amp;quot;&amp;quot;,size=0_i64,mode=0_i64,uid=0,gid=0,uname=&amp;quot;&amp;quot;,gname=&amp;quot;&amp;quot;,mod_time=Crystar.unix_time(0,0),access_time=Crystar.unix_time(0,0),change_time=Crystar.unix_time(0,0),dev_major=0_i64,dev_minor=0_i64,xattr=Hash(String,String).new,pax_records=Hash(String,String).new,format=Format::None,io=IO::Memory.new)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(flag = <span class="n">0_u8</span>, name = <span class="s">&quot;&quot;</span>, link_name = <span class="s">&quot;&quot;</span>, size = <span class="n">0_i64</span>, mode = <span class="n">0_i64</span>, uid = <span class="n">0</span>, gid = <span class="n">0</span>, uname = <span class="s">&quot;&quot;</span>, gname = <span class="s">&quot;&quot;</span>, mod_time = <span class="t">Crystar</span>.unix_time(<span class="n">0</span>, <span class="n">0</span>), access_time = <span class="t">Crystar</span>.unix_time(<span class="n">0</span>, <span class="n">0</span>), change_time = <span class="t">Crystar</span>.unix_time(<span class="n">0</span>, <span class="n">0</span>), dev_major = <span class="n">0_i64</span>, dev_minor = <span class="n">0_i64</span>, xattr = <span class="t">Hash</span>(<span class="t">String</span>, <span class="t">String</span>).<span class="k">new</span>, pax_records = <span class="t">Hash</span>(<span class="t">String</span>, <span class="t">String</span>).<span class="k">new</span>, format = <span class="t">Format</span><span class="t">::</span><span class="t">None</span>, io = <span class="t">IO</span><span class="t">::</span><span class="t">Memory</span>.<span class="k">new</span>)
+
+        <a class="method-permalink" href="#new%28flag%3D0_u8%2Cname%3D%26quot%3B%26quot%3B%2Clink_name%3D%26quot%3B%26quot%3B%2Csize%3D0_i64%2Cmode%3D0_i64%2Cuid%3D0%2Cgid%3D0%2Cuname%3D%26quot%3B%26quot%3B%2Cgname%3D%26quot%3B%26quot%3B%2Cmod_time%3DCrystar.unix_time%280%2C0%29%2Caccess_time%3DCrystar.unix_time%280%2C0%29%2Cchange_time%3DCrystar.unix_time%280%2C0%29%2Cdev_major%3D0_i64%2Cdev_minor%3D0_i64%2Cxattr%3DHash%28String%2CString%29.new%2Cpax_records%3DHash%28String%2CString%29.new%2Cformat%3DFormat%3A%3ANone%2Cio%3DIO%3A%3AMemory.new%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L81" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+  <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="==(other:self)-instance-method">
+      <div class="signature">
+        
+        def <strong>==</strong>(other : <span class="k">self</span>)
+
+        <a class="method-permalink" href="#%3D%3D%28other%3Aself%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="access_time:Time-instance-method">
+      <div class="signature">
+        
+        def <strong>access_time</strong> : Time
+
+        <a class="method-permalink" href="#access_time%3ATime-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Modification time</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L38" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="access_time=(access_time:Time)-instance-method">
+      <div class="signature">
+        
+        def <strong>access_time=</strong>(access_time : Time)
+
+        <a class="method-permalink" href="#access_time%3D%28access_time%3ATime%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Modification time</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L42" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="change_time:Time-instance-method">
+      <div class="signature">
+        
+        def <strong>change_time</strong> : Time
+
+        <a class="method-permalink" href="#change_time%3ATime-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Access time (requires either PAX or GNU support)</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L39" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="change_time=(change_time:Time)-instance-method">
+      <div class="signature">
+        
+        def <strong>change_time=</strong>(change_time : Time)
+
+        <a class="method-permalink" href="#change_time%3D%28change_time%3ATime%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Access time (requires either PAX or GNU support)</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L43" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="dev_major:Int64-instance-method">
+      <div class="signature">
+        
+        def <strong>dev_major</strong> : Int64
+
+        <a class="method-permalink" href="#dev_major%3AInt64-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L41" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="dev_major=(dev_major:Int64)-instance-method">
+      <div class="signature">
+        
+        def <strong>dev_major=</strong>(dev_major : Int64)
+
+        <a class="method-permalink" href="#dev_major%3D%28dev_major%3AInt64%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L45" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="dev_minor:Int64-instance-method">
+      <div class="signature">
+        
+        def <strong>dev_minor</strong> : Int64
+
+        <a class="method-permalink" href="#dev_minor%3AInt64-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Major device number (valid for CHAR or BLOCK)</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L42" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="dev_minor=(dev_minor:Int64)-instance-method">
+      <div class="signature">
+        
+        def <strong>dev_minor=</strong>(dev_minor : Int64)
+
+        <a class="method-permalink" href="#dev_minor%3D%28dev_minor%3AInt64%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Major device number (valid for CHAR or BLOCK)</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L46" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="file_info-instance-method">
+      <div class="signature">
+        
+        def <strong>file_info</strong>
+
+        <a class="method-permalink" href="#file_info-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>file_info returns an File::Info for the header</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L296" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="flag:UInt8-instance-method">
+      <div class="signature">
+        
+        def <strong>flag</strong> : UInt8
+
+        <a class="method-permalink" href="#flag%3AUInt8-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Typeflag is the type of header entry.
+The zero value is automatically promoted to either TypeReg or TypeDir
+depending on the presence of a trailing slash in Name.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L21" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="flag=(flag:UInt8)-instance-method">
+      <div class="signature">
+        
+        def <strong>flag=</strong>(flag : UInt8)
+
+        <a class="method-permalink" href="#flag%3D%28flag%3AUInt8%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Typeflag is the type of header entry.
+The zero value is automatically promoted to either TypeReg or TypeDir
+depending on the presence of a trailing slash in Name.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L25" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="flag=(v:Int)-instance-method">
+      <div class="signature">
+        
+        def <strong>flag=</strong>(v : Int)
+
+        <a class="method-permalink" href="#flag%3D%28v%3AInt%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L102" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="format:Format-instance-method">
+      <div class="signature">
+        
+        def <strong>format</strong> : <a href="../Crystar/Format.html">Format</a>
+
+        <a class="method-permalink" href="#format%3AFormat-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L79" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="format=(format:Format)-instance-method">
+      <div class="signature">
+        
+        def <strong>format=</strong>(format : <a href="../Crystar/Format.html">Format</a>)
+
+        <a class="method-permalink" href="#format%3D%28format%3AFormat%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L83" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="gid:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>gid</strong> : Int32
+
+        <a class="method-permalink" href="#gid%3AInt32-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>User ID of owner</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L28" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="gid=(gid:Int32)-instance-method">
+      <div class="signature">
+        
+        def <strong>gid=</strong>(gid : Int32)
+
+        <a class="method-permalink" href="#gid%3D%28gid%3AInt32%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>User ID of owner</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L32" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="gid=(v:Int)-instance-method">
+      <div class="signature">
+        
+        def <strong>gid=</strong>(v : Int)
+
+        <a class="method-permalink" href="#gid%3D%28v%3AInt%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L98" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="gname:String-instance-method">
+      <div class="signature">
+        
+        def <strong>gname</strong> : String
+
+        <a class="method-permalink" href="#gname%3AString-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>User name of owner</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L30" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="gname=(gname:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>gname=</strong>(gname : String)
+
+        <a class="method-permalink" href="#gname%3D%28gname%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>User name of owner</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L34" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="hash(hasher)-instance-method">
+      <div class="signature">
+        
+        def <strong>hash</strong>(hasher)
+
+        <a class="method-permalink" href="#hash%28hasher%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="io:IO-instance-method">
+      <div class="signature">
+        
+        def <strong>io</strong> : IO
+
+        <a class="method-permalink" href="#io%3AIO-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L81" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="link_name:String-instance-method">
+      <div class="signature">
+        
+        def <strong>link_name</strong> : String
+
+        <a class="method-permalink" href="#link_name%3AString-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Name of file entry</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L23" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="link_name=(link_name:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>link_name=</strong>(link_name : String)
+
+        <a class="method-permalink" href="#link_name%3D%28link_name%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Name of file entry</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L27" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="mod_time:Time-instance-method">
+      <div class="signature">
+        
+        def <strong>mod_time</strong> : Time
+
+        <a class="method-permalink" href="#mod_time%3ATime-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>If the Format is unspecified, then Writer.WriteHeader rounds ModTime
+to the nearest second and ignores the AccessTime and ChangeTime fields.</p>
+
+<p>To use AccessTime or ChangeTime, specify the Format as PAX or GNU.
+To use sub-second resolution, specify the Format as PAX.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L37" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="mod_time=(mod_time:Time)-instance-method">
+      <div class="signature">
+        
+        def <strong>mod_time=</strong>(mod_time : Time)
+
+        <a class="method-permalink" href="#mod_time%3D%28mod_time%3ATime%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>If the Format is unspecified, then Writer.WriteHeader rounds ModTime
+to the nearest second and ignores the AccessTime and ChangeTime fields.</p>
+
+<p>To use AccessTime or ChangeTime, specify the Format as PAX or GNU.
+To use sub-second resolution, specify the Format as PAX.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L41" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="mode:Int64-instance-method">
+      <div class="signature">
+        
+        def <strong>mode</strong> : Int64
+
+        <a class="method-permalink" href="#mode%3AInt64-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Logical file size in bytes</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L26" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="mode=(mode:Int64)-instance-method">
+      <div class="signature">
+        
+        def <strong>mode=</strong>(mode : Int64)
+
+        <a class="method-permalink" href="#mode%3D%28mode%3AInt64%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Logical file size in bytes</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L30" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="name:String-instance-method">
+      <div class="signature">
+        
+        def <strong>name</strong> : String
+
+        <a class="method-permalink" href="#name%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L22" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="name=(name:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>name=</strong>(name : String)
+
+        <a class="method-permalink" href="#name%3D%28name%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L26" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="pax_records:Hash(String,String)-instance-method">
+      <div class="signature">
+        
+        def <strong>pax_records</strong> : Hash(String, String)
+
+        <a class="method-permalink" href="#pax_records%3AHash%28String%2CString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>PAXRecords is a map of PAX extended header records.</p>
+
+<p>User-defined records should have keys of the following form:
+	VENDOR.keyword
+Where VENDOR is some namespace in all uppercase, and keyword may
+not contain the '=' character (e.g., "GOLANG.pkg.version").
+The key and value should be non-empty UTF-8 strings.</p>
+
+<p>When Writer.WriteHeader is called, PAX records derived from the
+other fields in Header take precedence over PAXRecords.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L67" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="pax_records=(pax_records:Hash(String,String))-instance-method">
+      <div class="signature">
+        
+        def <strong>pax_records=</strong>(pax_records : Hash(String, String))
+
+        <a class="method-permalink" href="#pax_records%3D%28pax_records%3AHash%28String%2CString%29%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>PAXRecords is a map of PAX extended header records.</p>
+
+<p>User-defined records should have keys of the following form:
+	VENDOR.keyword
+Where VENDOR is some namespace in all uppercase, and keyword may
+not contain the '=' character (e.g., "GOLANG.pkg.version").
+The key and value should be non-empty UTF-8 strings.</p>
+
+<p>When Writer.WriteHeader is called, PAX records derived from the
+other fields in Header take precedence over PAXRecords.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L71" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="size:Int64-instance-method">
+      <div class="signature">
+        
+        def <strong>size</strong> : Int64
+
+        <a class="method-permalink" href="#size%3AInt64-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L25" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="size=(size:Int64)-instance-method">
+      <div class="signature">
+        
+        def <strong>size=</strong>(size : Int64)
+
+        <a class="method-permalink" href="#size%3D%28size%3AInt64%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L29" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="size=(v:Int)-instance-method">
+      <div class="signature">
+        
+        def <strong>size=</strong>(v : Int)
+
+        <a class="method-permalink" href="#size%3D%28v%3AInt%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L90" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="uid:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>uid</strong> : Int32
+
+        <a class="method-permalink" href="#uid%3AInt32-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Permission and mode bits</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L27" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="uid=(v:Int)-instance-method">
+      <div class="signature">
+        
+        def <strong>uid=</strong>(v : Int)
+
+        <a class="method-permalink" href="#uid%3D%28v%3AInt%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L94" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="uid=(uid:Int32)-instance-method">
+      <div class="signature">
+        
+        def <strong>uid=</strong>(uid : Int32)
+
+        <a class="method-permalink" href="#uid%3D%28uid%3AInt32%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Permission and mode bits</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L31" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="uname:String-instance-method">
+      <div class="signature">
+        
+        def <strong>uname</strong> : String
+
+        <a class="method-permalink" href="#uname%3AString-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Group ID of owner</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L29" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="uname=(uname:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>uname=</strong>(uname : String)
+
+        <a class="method-permalink" href="#uname%3D%28uname%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Group ID of owner</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L33" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="xattr:Hash(String,String)-instance-method">
+      <div class="signature">
+        
+        def <strong>xattr</strong> : Hash(String, String)
+
+        <a class="method-permalink" href="#xattr%3AHash%28String%2CString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L55" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="xattr=(xattr:Hash(String,String))-instance-method">
+      <div class="signature">
+        
+        def <strong>xattr=</strong>(xattr : Hash(String, String))
+
+        <a class="method-permalink" href="#xattr%3D%28xattr%3AHash%28String%2CString%29%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/header.cr#L59" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>
