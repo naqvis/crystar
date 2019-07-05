@@ -104,6 +104,23 @@ Crystar::Reader.open(buf) do |tar|
 end
 ```
 
+Supports compressed archives as well.
+
+```crystal
+require "gzip"
+
+File.open("test.tar.gz") do |file|
+  Gzip::Reader.open(file) do |gzip|
+    Crystar::Reader.open(gzip) do |tar|
+      tar.each_entry do |entry|
+        p "Contents of #{entry.name}"
+        IO.copy entry.io, STDOUT
+      end
+    end
+  end
+end
+```
+
 Refer to `Crystar::Reader` and `Crystar::Writer` module for documentation on detailed usage.
 
 # Development
