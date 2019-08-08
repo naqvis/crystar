@@ -7,7 +7,7 @@ files = [
   {"todo.txt", "Get crystal mining license."},
 ]
 
-buf = File.open("test.tar", "w") do |file|
+File.open("test.tar", "w") do |file|
   Crystar::Writer.open(file) do |tw|
     files.each_with_index do |f, _|
       hdr = Header.new(

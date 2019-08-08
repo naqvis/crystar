@@ -107,13 +107,13 @@ module Crystar
       nil
     end
 
-    # Write writes to the current file in the tar archive.
-    # Write returns the error ErrWriteTooLong if more than
-    # Header.Size bytes are written after WriteHeader.
+    # write writes to the current file in the tar archive.
+    # write returns the error ErrWriteTooLong if more than
+    # Header#size bytes are written after WriteHeader.
     #
-    # Calling Write on special types like LINK, SYMLINK, CHAR,
+    # Calling write on special types like LINK, SYMLINK, CHAR,
     # BLOCK, DIR, and FIFO returns (0, ErrWriteTooLong) regardless
-    # of what the Header.Size claims.
+    # of what the Header#size claims.
     def write(b : Bytes)
       raise Error.new("Can't write to closed writer") if @closed
       # begin
@@ -124,7 +124,7 @@ module Crystar
     end
 
     # write_header writes hdr and prepares to accept the file's contents.
-    # The Header.Size determines how many bytes can be written for the next file.
+    # The Header#size determines how many bytes can be written for the next file.
     # If the current file is not fully written, then this returns an error.
     # This implicitly flushes any padding necessary before writing the header.
     def write_header(hdr : Header) : Nil
@@ -187,7 +187,8 @@ module Crystar
 
     # :nodoc:
     private def write_pax_header(hdr : Header, pax_hdrs : Hash(String, String)) : Nil
-      real_name, real_size = hdr.name, hdr.size
+      #real_name, real_size = hdr.name, hdr.size
+      real_name, _ = hdr.name, hdr.size
       # TO-DO
       # Add sparse support
 
@@ -277,11 +278,11 @@ module Crystar
     # shared in the USTAR, PAX, and GNU formats using the provided formatters.
     #
     # The block returned is only valid until the next call to
-    # templateV7Plus or writeRawFile.
+    # templateV7Plus or write_raw_file.
     private def template_v7_plus(hdr : Header, fmt_str : StringFormatter, fmt_num : NumberFormatter)
       @block.reset
 
-      mod_time = hdr.mod_time
+      #mod_time = hdr.mod_time
 
       v7 = @block.v7
       v7.flag[0] = hdr.flag

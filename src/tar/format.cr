@@ -115,7 +115,7 @@ module Crystar
   NAME_SIZE   = 100 # Max length of the name in USTAR format
   PREFIX_SIZE = 155 # Max length of the prefix field in USTAR format
 
-  # blockPadding computes the number of bytes needed to pad offset up to the
+  # block_padding computes the number of bytes needed to pad offset up to the
   # nearest block edge where 0 <= n < blockSize.
   def block_padding(offset : Int)
     -offset.to_i64 & (BLOCK_SIZE - 1)
@@ -160,7 +160,7 @@ module Crystar
       SparseArray.new(@block[...])
     end
 
-    # GetFormat checks that the block is a valid tar header based on the checksum.
+    # get_format checks that the block is a valid tar header based on the checksum.
     # It then attempts to guess the specific format based on magic values.
     # If the checksum fails, then Format::None is returned.
     def get_format

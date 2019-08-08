@@ -430,7 +430,7 @@ module Crystar
         ),
       ]
 
-      vectors.each_with_index do |v, i|
+      vectors.each_with_index do |v, _|
         File.open(v.file) do |file|
           Crystar::Reader.open(file) do |tar|
             p "Reading Crystar: #{v.file}"
@@ -474,12 +474,12 @@ module Crystar
         "spec/testdata/neg-size.tar",
       ]
 
-      vectors.each_with_index do |f, i|
+      vectors.each_with_index do |f, _|
         File.open(f) do |file|
           Crystar::Reader.open(file) do |tar|
             p "Reading Crystar: #{f}"
             expect_raises(Crystar::Error, "invalid tar header") do
-              tar.each_entry do |entry|
+              tar.each_entry do |_|
               end
             end
           end

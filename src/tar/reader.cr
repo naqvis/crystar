@@ -27,7 +27,7 @@ module Crystar
     # Returns `true` if this reader is closed.
     getter? closed = false
 
-    @pad = 0_i64 # Amound of padding (ignored) after current file entry
+    @pad = 0_i64 # Amount of padding (ignored) after current file entry
     @curr : FileReader
     @block : Block # Buffer to use as temporary local storage
 
@@ -56,7 +56,7 @@ module Crystar
       yield reader ensure reader.close
     end
 
-    # Yields each entry in the zip to the given block.
+    # Yields each entry in the tar to the given block.
     def each_entry
       while entry = next_entry
         yield entry
@@ -71,7 +71,7 @@ module Crystar
     end
 
     # next_entry advances to the next entry in the tar archive.
-    # The Header.Size determines how many bytes can be read for the next file.
+    # The Header#size determines how many bytes can be read for the next file.
     # Any remaining data in the current file is automatically discarded.
     #
     # EOF is returned at the end of the input.
@@ -85,7 +85,7 @@ module Crystar
       # normally be visible to the outside. As such, this loop iterates through
       # one or more "header files" until it finds a "normal file".
       format = Format.flags(USTAR, PAX, GNU)
-      while true
+      loop do
         # discard the remainder of the file and any padding
         @io.skip(@curr.physical_remaining)
         @io.read_fully?(@block[...@pad])
@@ -124,7 +124,7 @@ module Crystar
           end
           next # This is meta header affecting the next header
         else
-          # The old GNU sparse format is handled here since it is technially
+          # The old GNU sparse format is handled here since it is technically
           # just a regular file with additional attributes
           Crystar.merge_pax(hdr, pax_hdrs)
           hdr.name = gnu_long_name if !gnu_long_name.blank?
@@ -143,7 +143,7 @@ module Crystar
           handle_regular_file(hdr)
 
           # Sparse formats rely on being able to read from the logical data
-          # section; there must be a preceding call to handleRegularFile.
+          # section; there must be a preceding call to handle_regular_file.
           handle_sparse_file(hdr, raw_hdr)
 
           # Set the final guess at the format
@@ -168,13 +168,13 @@ module Crystar
     private def read_header
       # Two blocks of zero bytes marks the end of the archive.
       begin
-        n = @io.read_fully(@block.to_bytes)
+        @io.read_fully(@block.to_bytes)
       rescue IO::EOFError
         return {nil, nil, 0} # EOF is okay here; exactly 0 bytes read
       end
 
       if @block == Block.zero_block
-        n = @io.read_fully(@block.to_bytes)
+        @io.read_fully(@block.to_bytes)
         return {nil, nil, 0} if @block == Block.zero_block # normal EOF; exactly 2 block of zeros read
         raise Error.new("invalid tar header")              # Zero block and then non-zero block
       end
@@ -208,7 +208,7 @@ module Crystar
 
         prefix = ""
         case format
-        when .ustar?, .pax? # format.has(Format::USTAR | Format::PAX)
+        when .ustar?, .pax?
           hdr.format = format
           ustar = @block.ustar
           prefix = p.parse_string(ustar.prefix)
@@ -222,12 +222,12 @@ module Crystar
              nul.call(v7.mod_time) && nul.call(ustar.dev_major) && nul.call(ustar.dev_minor))
             hdr.format = Format::None # Numeric fields must end in NUL
           end
-        when .star? # format.has(Format::STAR)
+        when .star?
           star = @block.star
           prefix = p.parse_string(star.prefix)
           hdr.access_time = Crystar.unix_time(p.parse_numeric(star.access_time), 0)
           hdr.change_time = Crystar.unix_time(p.parse_numeric(star.change_time), 0)
-        when .gnu? # format.has(Format::GNU)
+        when .gnu?
           hdr.format = format
           p2 = Parser.new
           gnu = @block.gnu
@@ -256,8 +256,8 @@ module Crystar
     # If it's larger than four entries, then one or more extension headers are used
     # to store the rest of the sparse map.
     #
-    # The Header.Size does not reflect the size of any extended headers used.
-    # Thus, this function will read from the raw io.Reader to fetch extra headers.
+    # The Header#size does not reflect the size of any extended headers used.
+    # Thus, this method will read from the raw IO to fetch extra headers.
     # This method mutates blk in the process.
     private def read_old_gnu_sparse_map(hdr : Header, blk : Block)
       # Make sure that the input format is GNU.
@@ -269,7 +269,7 @@ module Crystar
       hdr.size = p.parse_numeric(blk.gnu.real_size)
       s = blk.gnu.sparse
       spd = SparseDatas.new(s.max_entries)
-      while true
+      loop do
         0.upto(s.max_entries - 1) do |i|
           # This termination condition is identical to GNU and BSD tar
           break if s.entry(i).offset[0] == 0x00 # Dont return, need to process extended headers (even if empty)
@@ -289,7 +289,7 @@ module Crystar
       end
     end
 
-    # handleRegularFile sets up the current file reader and padding such that it
+    # handle_regular_file sets up the current file reader and padding such that it
     # can only read the following logical data section. It will properly handle
     # special headers that contain no data section
     private def handle_regular_file(hdr : Header)
@@ -516,7 +516,7 @@ module Crystar
     end
   end
 
-  # merg_pax merges paxHdrs into hdr for all relevant fields of Header.
+  # merg_pax merges pax_hdrs into hdr for all relevant fields of Header.
   def merge_pax(hdr : Header, pax_hdrs : Hash(String, String))
     pax_hdrs.each do |k, v|
       next if v.blank? # Keep the original USTAR value
@@ -606,7 +606,7 @@ module Crystar
         r.read(blk.to_bytes[..])
         buf.seek(0, IO::Seek::End) # get to end, to append data
         buf.write(blk.to_bytes)
-        blk.to_bytes.each_with_index do |b, i|
+        blk.to_bytes.each_with_index do |b, _|
           cnt_new_line += 1 if b == '\n'.ord
         end
       end
@@ -635,7 +635,7 @@ module Crystar
     feed_tokens.call(2 * num_entries)
 
     spd = SparseDatas.new(num_entries)
-    0.upto(num_entries - 1) do |i|
+    0.upto(num_entries - 1) do |_|
       offset = next_token.call.to_i64
       length = next_token.call.to_i64
       spd << SparseEntry.new offset, length
@@ -685,7 +685,6 @@ module Crystar
       eof = nn == 0
       n += nn
     end
-    # return {n,false} if b.size == n && eof
     n
   end
 end

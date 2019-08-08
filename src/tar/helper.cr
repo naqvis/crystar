@@ -196,7 +196,7 @@ module Crystar
 
   def ltrim(b : Bytes, s : String)
     left = 0
-    b.each_with_index do |c, i|
+    b.each_with_index do |c, _|
       if s.includes?(c.unsafe_chr)
         left += 1
       else
@@ -209,7 +209,7 @@ module Crystar
   def rtrim(b : Bytes, s : String)
     a = b.dup.reverse!
     right = b.size - 1
-    a.each_with_index do |c, i|
+    a.each_with_index do |c, _|
       if s.includes?(c.unsafe_chr)
         right -= 1
       else
@@ -268,7 +268,7 @@ module Crystar
         return ~x.to_i64 if inv == 0xff
         return x.to_i64
       end
-      return parse_octal(b)
+      parse_octal(b)
     end
 
     def parse_octal(b : Bytes) : Int64

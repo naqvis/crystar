@@ -170,13 +170,10 @@ module Crystar
         # xattr bar should always appear before others
         buf.pos = 0
         str = buf.to_s
-        index = ->(str : String, s : String) {
-          a = str.index(s)
-          if a.nil?
-            fail "Couldn't find xattr = #{s}"
-          else
-            return a
-          end
+        index = ->(strs : String, s : String) {
+          a = strs.index(s)
+          fail "Couldn't find xattr = #{s}" if a.nil?
+          a
         }
         indices = [
           index.call(str, "bar=bar"),
@@ -280,8 +277,8 @@ module Crystar
         end
         b.pos = 0
         Crystar::Reader.open(b) do |tar|
-          tar.each_entry do |hdr|
-            hdr.name.should eq(name)
+          tar.each_entry do |entry|
+            entry.name.should eq(name)
           end
         end
       end

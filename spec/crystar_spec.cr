@@ -24,7 +24,7 @@ module Crystar
                    texture.new(in: Int64::MIN, width: 12, ok: true),
         ]
 
-        vectors.each_with_index do |v, i|
+        vectors.each_with_index do |v, _|
           ok = fits_in_base256(v[:width], v[:in])
           ok.should eq(v[:ok])
         end
@@ -69,7 +69,7 @@ module Crystar
                    {"0123\x7e\x5f\x264123", 0, false},
         ]
         pr = Parser.new
-        vectors.each_with_index do |v, i|
+        vectors.each_with_index do |v, _|
           begin
             got = pr.parse_numeric(v[0].to_slice)
             got.should eq(v[1])
@@ -130,7 +130,7 @@ module Crystar
 
         fmt = Formatter.new
 
-        vectors.each_with_index do |v, i|
+        vectors.each_with_index do |v, _|
           begin
             got = Bytes.new(v[1].to_slice.size)
             # begin
@@ -178,7 +178,7 @@ module Crystar
                    {-1564164, 30, false},
         ]
 
-        vectors.each_with_index do |v, i|
+        vectors.each_with_index do |v, _|
           ok = fits_in_octal(v[1], v[0].to_i64)
           ok.should eq(v[2])
         end
@@ -243,7 +243,7 @@ module Crystar
           {"𝟵𝟴𝟳𝟲𝟱.𝟰𝟯𝟮𝟭𝟬", unix_time(0, 0), false}, # Unicode numbers (U+1D7EC to U+1D7F5)
           {"98765﹒43210", unix_time(0, 0), false}, # Unicode period (U+FE52)
         ]
-        vectors.each_with_index do |v, i|
+        vectors.each_with_index do |v, _|
           begin
             ts = parse_pax_time(v[0])
             ts.should eq(v[1])
@@ -285,7 +285,7 @@ module Crystar
           {-1350244992, -23960100, "-1350244992.0239601"},
           {-1350244992, -23960108, "-1350244992.023960108"},
         ]
-        vectors.each_with_index do |v, i|
+        vectors.each_with_index do |v, _|
           begin
             ts = format_pax_time(unix_time(v[0], v[1]))
             ts.should eq(v[2])
