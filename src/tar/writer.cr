@@ -187,7 +187,7 @@ module Crystar
 
     # :nodoc:
     private def write_pax_header(hdr : Header, pax_hdrs : Hash(String, String)) : Nil
-      #real_name, real_size = hdr.name, hdr.size
+      # real_name, real_size = hdr.name, hdr.size
       real_name, _ = hdr.name, hdr.size
       # TO-DO
       # Add sparse support
@@ -282,7 +282,7 @@ module Crystar
     private def template_v7_plus(hdr : Header, fmt_str : StringFormatter, fmt_num : NumberFormatter)
       @block.reset
 
-      #mod_time = hdr.mod_time
+      # mod_time = hdr.mod_time
 
       v7 = @block.v7
       v7.flag[0] = hdr.flag
