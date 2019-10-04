@@ -229,7 +229,7 @@ module Crystar
           c = ' '.ord
         end
         u += c.to_i64
-        s += c.to_i8.to_i64
+        s += c.to_i64
       end
       {u, s}
     end
@@ -471,7 +471,7 @@ module Crystar
     end
 
     def max_entries
-      @s.size / 24
+      @s.size // 24
     end
   end
 
