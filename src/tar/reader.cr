@@ -39,7 +39,10 @@ module Crystar
 
     # Creates a new reader from the given *filename*.
     def self.new(filename : String)
-      new(::File.open(filename), sync_close: true)
+      ::File.open(filename) do |io|
+        reader = new(io, sync_close: true)
+      end
+      reader
     end
 
     # Creates a new reader from the given *io*, yields it to the given block,
