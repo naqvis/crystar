@@ -365,7 +365,7 @@ module Crystar
       abstract def read(b : Bytes) : Int
       abstract def write_to(w : IO) : Int
 
-      def write(b : Bytes)
+      def write(b : Bytes) : Nil
         raise Error.new "Crystar Reader: Can't write"
       end
 
@@ -380,7 +380,7 @@ module Crystar
         super(@io)
       end
 
-      def read(b : Bytes)
+      def read(b : Bytes) : Int32
         b = b[...@nb] if b.size > @nb
         n = 0
         eof = false
@@ -396,15 +396,15 @@ module Crystar
         n
       end
 
-      def write_to(w : IO)
+      def write_to(w : IO) : Int
         IO.copy self, w
       end
 
-      def logical_remaining
+      def logical_remaining : Int64
         @nb
       end
 
-      def physical_remaining
+      def physical_remaining : Int64
         @nb
       end
     end
@@ -414,7 +414,7 @@ module Crystar
         super(@fr)
       end
 
-      def read(b : Bytes)
+      def read(b : Bytes) : Int32
         finished = b.size >= logical_remaining
         b = b[...logical_remaining] if finished
 
@@ -453,7 +453,7 @@ module Crystar
         n
       end
 
-      def write_to(w : IO)
+      def write_to(w : IO) : Int
         begin
           w.seek(0, IO::Seek::Current)
         rescue ex
@@ -506,11 +506,11 @@ module Crystar
         n
       end
 
-      def logical_remaining
+      def logical_remaining : Int64
         @sp[@sp.size - 1].end_of_offset - @pos
       end
 
-      def physical_remaining
+      def physical_remaining : Int64
         @fr.physical_remaining
       end
     end

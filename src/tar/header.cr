@@ -424,17 +424,17 @@ module Crystar
     def initialize(@header)
     end
 
-    def size
+    def size : UInt64
       header.size
     end
 
-    def permissions
+    def permissions : File::Permissions
       mode = header.mode.to_u32
       mode &= File::Permissions::All.value
       File::Permissions.new(mode)
     end
 
-    def type
+    def type : File::Type
       t = File::Type::File
       m = header.mode.to_u32 & ~File::Permissions::All.value
       case m
@@ -458,7 +458,7 @@ module Crystar
       t
     end
 
-    def flags
+    def flags : File::Flags
       mode = header.mode.to_u32
       f = File::Flags::None
       f |= File::Flags::SetUser if mode & ISUID != 0
@@ -467,19 +467,19 @@ module Crystar
       f
     end
 
-    def modification_time
+    def modification_time : Time
       header.mod_time
     end
 
-    def owner
+    def owner : UInt32
       header.uid
     end
 
-    def group
+    def group : UInt32
       header.gid
     end
 
-    def same_file?(other : File::Info)
+    def same_file?(other : File::Info) : Bool
       size == other.size && permissions == other.permissions &&
         type == other.type && flags == other.flag && owner == other.owner &&
         group == other.group

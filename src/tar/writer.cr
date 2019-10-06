@@ -114,7 +114,7 @@ module Crystar
     # Calling write on special types like LINK, SYMLINK, CHAR,
     # BLOCK, DIR, and FIFO returns (0, ErrWriteTooLong) regardless
     # of what the Header#size claims.
-    def write(b : Bytes)
+    def write(b : Bytes) : Nil
       raise Error.new("Can't write to closed writer") if @closed
       # begin
       @curr.write(b)
@@ -367,7 +367,7 @@ module Crystar
         super(@io)
       end
 
-      def write(b : Bytes)
+      def write(b : Bytes) : Nil
         overwrite = b.size > @nb
         b = b[..@nb] if overwrite
         if b.size > 0
@@ -378,15 +378,15 @@ module Crystar
         nil
       end
 
-      def read_from(r : IO)
+      def read_from(r : IO) : Int
         IO.copy r, self
       end
 
-      def logical_remaining
+      def logical_remaining : Int64
         @nb
       end
 
-      def physical_remaining
+      def physical_remaining : Int64
         @nb
       end
     end
@@ -396,7 +396,7 @@ module Crystar
         super(@fw)
       end
 
-      def write(b : Bytes)
+      def write(b : Bytes) : Nil
         overwrite = b.size > logical_remaining
         b = b[...logical_remaining] if overwrite
 
@@ -438,7 +438,7 @@ module Crystar
         n
       end
 
-      def read_from(r : IO)
+      def read_from(r : IO) : Int
         begin
           r.seek(0, IO::Seek::Current)
         rescue ex
@@ -494,11 +494,11 @@ module Crystar
         n
       end
 
-      def logical_remaining
+      def logical_remaining : Int64
         @sp[@sp.size - 1].end_of_offset - @pos
       end
 
-      def physical_remaining
+      def physical_remaining : Int64
         @fw.physical_remaining
       end
 
