@@ -430,7 +430,7 @@ module Crystar
         ),
       ]
 
-      vectors.each_with_index do |v, _|
+      vectors.each do |v|
         File.open(v.file) do |file|
           Crystar::Reader.open(file) do |tar|
             p "Reading Crystar: #{v.file}"
@@ -474,7 +474,7 @@ module Crystar
         "spec/testdata/neg-size.tar",
       ]
 
-      vectors.each_with_index do |f, _|
+      vectors.each do |f|
         File.open(f) do |file|
           Crystar::Reader.open(file) do |tar|
             p "Reading Crystar: #{f}"

@@ -4,25 +4,25 @@
 
 # Crystal Tar (Crystar)
 
-Shard `Crystar` implements access to tar archives. 
+Shard `Crystar` implements access to tar archives.
 
 *No external library needed.* This is written in **pure Crystal**.
 
-Tape archives (tar) are a file format for storing a sequence of files that can be read and written in a streaming manner. This shard aims to cover most variations of the format, including those produced by **GNU** and **BSD** tar tools. 
+Tape archives (tar) are a file format for storing a sequence of files that can be read and written in a streaming manner. This shard aims to cover most variations of the format, including those produced by **GNU** and **BSD** tar tools.
 
 This module is mostly based on [`Tar`](https://golang.google.cn/pkg/archive/tar/) package implementation of [Golang](http://golang.org/)
 
 
   Format represents the tar archive format.
-  
+
   The original tar format was introduced in Unix V7.
   Since then, there have been multiple competing formats attempting to
   standardize or extend the **V7** format to overcome its limitations.
   The most common formats are the **USTAR**, **PAX**, and **GNU** formats,
   each with their own advantages and limitations.
-  
+
   The following table captures the capabilities of each format:
-  
+
   	                  |  USTAR |       PAX |       GNU
   	------------------+--------+-----------+----------
   	Name              |   256B | unlimited | unlimited
@@ -39,16 +39,16 @@ This module is mostly based on [`Tar`](https://golang.google.cn/pkg/archive/tar/
   	string encoding   |  ASCII |     UTF-8 |    binary
   	sub-second times  |     no |       yes |        no
   	sparse files      |     no |       yes |       yes
-  
+
   The table's upper portion shows the Header fields, where each format reports
   the maximum number of bytes allowed for each string field and
   the integer type used to store each numeric field
   (where timestamps are stored as the number of seconds since the Unix epoch).
-  
+
   The table's lower portion shows specialized features of each format,
   such as supported string encodings, support for sub-second timestamps,
   or support for sparse files.
-  
+
   The `Writer` currently provides **no support** for _sparse files_.
 
 ## Installation
@@ -83,7 +83,7 @@ files = [
 
 buf = IO::Memory.new
 Crystar::Writer.open(buf) do |tw|
-  files.each_with_index do |f, _|
+  files.each do |f|
     hdr = Header.new(
       name: f[0],
       mode: 0o600_i64,

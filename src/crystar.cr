@@ -13,7 +13,7 @@ require "./tar/*"
 # ]
 # buf = IO::Memory.new
 # Crystar::Writer.open(buf) do |tw|
-#   files.each_with_index do |f, _|
+#   files.each do |f|
 #     hdr = Header.new(
 #       name: f[0],
 #       mode: 0o600_i64,

@@ -357,7 +357,7 @@ module Crystar
     return false unless size >= 0
 
     pre = SparseEntry.new 0, 0
-    sp.each_with_index do |cur, _|
+    sp.each do |cur|
       case
       when cur.offset < 0, cur.length < 0 then return false       # negative values are never okay
       when cur.offset > Int64::MAX - cur.length then return false # Integer overflow with large length
@@ -378,7 +378,7 @@ module Crystar
   # offsets and lengths that are multiples of blockSize.
   def align_sparse_entries(src : Array(SparseEntry), size : Int64)
     dst = src[...0]
-    src.each_with_index do |s, _|
+    src.each do |s|
       p, e = s.offset, s.end_of_offset
       p += block_padding(+p)              # Round-up to nearest blocksize
       e -= block_padding(-e) if e != size # Round-down to nearest blocksize
@@ -398,7 +398,7 @@ module Crystar
   def invert_sparse_entries(src : Array(SparseEntry), size : Int64)
     dst = src[...0]
     pre = SparseEntry.new 0, 0
-    src.each_with_index do |cur, _|
+    src.each do |cur|
       next if cur.length == 0 # skip empty fragments
       pre.length = cur.offset - pre.offset
       dst << pre if pre.length > 0 # Only add non-empty fragments
@@ -475,8 +475,18 @@ module Crystar
       header.uid
     end
 
+    # Breaking change: added in Crystal v0.33.0
+    def owner_id : String
+      owner.to_s
+    end
+
     def group : UInt32
       header.gid
+    end
+
+    # Breaking change: added in Crystal v0.33.0
+    def group_id : String
+      group.to_s
     end
 
     def same_file?(other : File::Info) : Bool
@@ -493,7 +503,7 @@ module Crystar
     info = File.info(fi.path, follow_symlinks: false)
     bname = File.basename fi.path
     h = Header.new(name: bname, mod_time: info.modification_time,
-      mode: info.permissions.value.to_i64, uid: info.owner.to_i32, gid: info.group.to_i32)
+      mode: info.permissions.value.to_i64, uid: info.owner_id.to_i32, gid: info.group_id.to_i32)
 
     case info.type
     when .file?

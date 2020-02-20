@@ -17,7 +17,7 @@ module Crystar
     return s if s.ascii_only?
     b = Bytes.new(s.size)
     index = 0
-    s.bytes.each_with_index do |c, _|
+    s.bytes.each do |c|
       if c < 0x80 && c != 0x00
         b[index] = c
         index += 1
@@ -196,7 +196,7 @@ module Crystar
 
   def ltrim(b : Bytes, s : String)
     left = 0
-    b.each_with_index do |c, _|
+    b.each do |c|
       if s.includes?(c.unsafe_chr)
         left += 1
       else
@@ -209,7 +209,7 @@ module Crystar
   def rtrim(b : Bytes, s : String)
     a = b.dup.reverse!
     right = b.size - 1
-    a.each_with_index do |c, _|
+    a.each do |c|
       if s.includes?(c.unsafe_chr)
         right -= 1
       else

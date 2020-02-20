@@ -39,10 +39,7 @@ module Crystar
 
     # Creates a new reader from the given *filename*.
     def self.new(filename : String)
-      ::File.open(filename) do |io|
-        reader = new(io, sync_close: true)
-      end
-      reader
+      new(::File.new(filename), sync_close: true)
     end
 
     # Creates a new reader from the given *io*, yields it to the given block,
@@ -609,7 +606,7 @@ module Crystar
         r.read(blk.to_bytes[..])
         buf.seek(0, IO::Seek::End) # get to end, to append data
         buf.write(blk.to_bytes)
-        blk.to_bytes.each_with_index do |b, _|
+        blk.to_bytes.each do |b|
           cnt_new_line += 1 if b == '\n'.ord
         end
       end
