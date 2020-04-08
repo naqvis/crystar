@@ -121,6 +121,8 @@ module Crystar
             gnu_long_name = p.parse_string(realname)
           when GNU_LONGLINK
             gnu_long_link = p.parse_string(realname)
+          else
+            #
           end
           next # This is meta header affecting the next header
         else
@@ -245,6 +247,8 @@ module Crystar
             end
             hdr.format = Format::None # Bugyy file is not GNU
           end
+        else
+          # We don't need to do anything
         end
         hdr.name = "#{prefix}/#{hdr.name}" if prefix.size > 0
       end
