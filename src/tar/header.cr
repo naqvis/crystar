@@ -234,6 +234,8 @@ module Crystar
         raise Error.new("only PAXRecords should be set for XGlobalHeader") if self == h2
         why_only_pax = "only PAX supports XGlobalHeader"
         format = format.may_only_be(Format::PAX)
+      else
+        #
       end
 
       raise Error.new("negative size on header-only type") if !Crystar.header_only_type?(flag) && size < 0
@@ -534,6 +536,8 @@ module Crystar
       h.mode |= ISGID
     when .sticky?
       h.mode |= ISVTX
+    else
+      #
     end
     h
   end
