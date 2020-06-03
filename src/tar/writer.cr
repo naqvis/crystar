@@ -114,7 +114,7 @@ module Crystar
     # Calling write on special types like LINK, SYMLINK, CHAR,
     # BLOCK, DIR, and FIFO returns (0, ErrWriteTooLong) regardless
     # of what the Header#size claims.
-    def write(b : Bytes) : Nil
+    def write(b : Bytes) : Int64
       raise Error.new("Can't write to closed writer") if @closed
       # begin
       @curr.write(b)
@@ -349,7 +349,7 @@ module Crystar
       def initialize(@io)
       end
 
-      abstract def write(b : Bytes) : Nil
+      abstract def write(b : Bytes) : Int64
       abstract def read_from(r : IO) : Int
 
       def read(b : Bytes)
@@ -367,7 +367,7 @@ module Crystar
         super(@io)
       end
 
-      def write(b : Bytes) : Nil
+      def write(b : Bytes) : Int64
         overwrite = b.size > @nb
         b = b[..@nb] if overwrite
         if b.size > 0
@@ -375,7 +375,7 @@ module Crystar
           @nb -= b.size
         end
         raise ErrWriteTooLong.new "tar: write too long" if overwrite
-        nil
+        b.size.to_i64
       end
 
       def read_from(r : IO) : Int
@@ -396,7 +396,7 @@ module Crystar
         super(@fw)
       end
 
-      def write(b : Bytes) : Nil
+      def write(b : Bytes) : Int64
         overwrite = b.size > logical_remaining
         b = b[...logical_remaining] if overwrite
 
@@ -435,7 +435,7 @@ module Crystar
           raise Error.new("sparse file contains unreferenced data")
         end
         raise IO::EOFError.new if overwrite
-        n
+        b.size.to_i64
       end
 
       def read_from(r : IO) : Int
