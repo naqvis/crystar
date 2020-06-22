@@ -369,7 +369,7 @@ module Crystar
       abstract def read(b : Bytes) : Int
       abstract def write_to(w : IO) : Int
 
-      def write(b : Bytes) : Int64
+      def write(b : Bytes) : Nil
         raise Error.new "Crystar Reader: Can't write"
       end
 

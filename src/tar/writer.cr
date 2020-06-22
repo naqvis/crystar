@@ -114,13 +114,9 @@ module Crystar
     # Calling write on special types like LINK, SYMLINK, CHAR,
     # BLOCK, DIR, and FIFO returns (0, ErrWriteTooLong) regardless
     # of what the Header#size claims.
-    def write(b : Bytes) : Int64
+    def write(b : Bytes) : Nil
       raise Error.new("Can't write to closed writer") if @closed
-      # begin
       @curr.write(b)
-      # rescue ErrWriteTooLong
-      # ignore it
-      # end
     end
 
     # write_header writes hdr and prepares to accept the file's contents.
@@ -349,7 +345,7 @@ module Crystar
       def initialize(@io)
       end
 
-      abstract def write(b : Bytes) : Int64
+      abstract def write(b : Bytes) : Nil
       abstract def read_from(r : IO) : Int
 
       def read(b : Bytes)
@@ -367,7 +363,7 @@ module Crystar
         super(@io)
       end
 
-      def write(b : Bytes) : Int64
+      def write(b : Bytes) : Nil
         overwrite = b.size > @nb
         b = b[..@nb] if overwrite
         if b.size > 0
@@ -375,7 +371,6 @@ module Crystar
           @nb -= b.size
         end
         raise ErrWriteTooLong.new "tar: write too long" if overwrite
-        b.size.to_i64
       end
 
       def read_from(r : IO) : Int
@@ -396,10 +391,9 @@ module Crystar
         super(@fw)
       end
 
-      def write(b : Bytes) : Int64
+      def write(b : Bytes) : Nil
         overwrite = b.size > logical_remaining
         b = b[...logical_remaining] if overwrite
-        written = 0i64
         end_pos = @pos + b.size
         too_long = false
         while end_pos > @pos && !too_long
@@ -421,7 +415,6 @@ module Crystar
           end
           b = b[nf..]
           @pos += nf
-          written += nf
           if @pos >= data_end && @sp.size > 1
             @sp = @sp[1..] # Ensure last fragment always remains
           end
@@ -434,7 +427,6 @@ module Crystar
           raise Error.new("sparse file contains unreferenced data")
         end
         raise IO::EOFError.new if overwrite
-        written
       end
 
       def read_from(r : IO) : Int
