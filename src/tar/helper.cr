@@ -302,7 +302,7 @@ module Crystar
       # in the V7 path field as a directory even though the full path
       # recorded elsewhere (e.g., via PAX record) contains no trailing slash.
       if b[b.size - 1] == '/'.ord
-        n = s[..b.size].rstrip('/').size
+        n = s[...b.size].rstrip('/').size
         b[n] = 0 # Replace trailing slash with NUL terminator
       end
     end
