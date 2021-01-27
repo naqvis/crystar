@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.28.0">
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../";
+</script>
+
+  <meta id="repository-name" content="github.com/naqvis/crystar">
+  <title>Crystar::Format - github.com/naqvis/crystar</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="github.com/naqvis/crystar/Crystar" data-name="crystar">
+      <a href="../Crystar.html">Crystar</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Error" data-name="crystar::error">
+      <a href="../Crystar/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/ErrWriteTooLong" data-name="crystar::errwritetoolong">
+      <a href="../Crystar/ErrWriteTooLong.html">ErrWriteTooLong</a>
+      
+    </li>
+  
+  <li class=" current" data-id="github.com/naqvis/crystar/Crystar/Format" data-name="crystar::format">
+      <a href="../Crystar/Format.html">Format</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Header" data-name="crystar::header">
+      <a href="../Crystar/Header.html">Header</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/naqvis/crystar/Crystar/Reader" data-name="crystar::reader">
+      <a href="../Crystar/Reader.html">Reader</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Reader/FileReader" data-name="crystar::reader::filereader">
+      <a href="../Crystar/Reader/FileReader.html">FileReader</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/SparseDatas" data-name="crystar::sparsedatas">
+      <a href="../Crystar/SparseDatas.html">SparseDatas</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/SparseEntry" data-name="crystar::sparseentry">
+      <a href="../Crystar/SparseEntry.html">SparseEntry</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/SparseHoles" data-name="crystar::sparseholes">
+      <a href="../Crystar/SparseHoles.html">SparseHoles</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/naqvis/crystar/Crystar/Writer" data-name="crystar::writer">
+      <a href="../Crystar/Writer.html">Writer</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">enum</span> Crystar::Format
+
+</h1>
+
+
+
+
+
+  <h2>Overview</h2>
+
+  <p>Various Crystar formats</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/format.cr#L44" target="_blank">
+        tar/format.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+  
+    <h2>Enum Members</h2>
+  
+  <dl>
+    
+      <dt class="entry-const" id="V7">
+        <strong>V7</strong> = <code><span class="n">1</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>The format of the original Unix V7 tar tool prior to standardization.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="USTAR">
+        <strong>USTAR</strong> = <code><span class="n">2</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>USTAR represents the USTAR header format defined in POSIX.1-1988.</p>
+
+<p>While this format is compatible with most tar readers,
+the format has several limitations making it unsuitable for some usages.
+Most notably, it cannot support sparse files, files larger than 8GiB,
+filenames larger than 256 characters, and non-ASCII filenames.</p>
+
+<p>Reference:
+	http:#pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_13_06</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="PAX">
+        <strong>PAX</strong> = <code><span class="n">4</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>PAX represents the PAX header format defined in POSIX.1-2001.</p>
+
+<p>PAX extends USTAR by writing a special file with Typeflag TypeXHeader
+preceding the original header. This file contains a set of key-value
+records, which are used to overcome USTAR's shortcomings, in addition to
+providing the ability to have sub-second resolution for timestamps.</p>
+
+<p>Some newer formats add their own extensions to PAX by defining their
+own keys and assigning certain semantic meaning to the associated values.
+For example, sparse file support in PAX is implemented using keys
+defined by the GNU manual (e.g., "GNU.sparse.map").</p>
+
+<p>Reference:
+	http:#pubs.opengroup.org/onlinepubs/009695399/utilities/pax.html</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="GNU">
+        <strong>GNU</strong> = <code><span class="n">8</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>GNU represents the GNU header format.</p>
+
+<p>The GNU header format is older than the USTAR and PAX standards and
+is not compatible with them. The GNU format supports
+arbitrary file sizes, filenames of arbitrary encoding and length,
+sparse files, and other features.</p>
+
+<p>It is recommended that PAX be chosen over GNU unless the target
+application can only parse GNU formatted archives.</p>
+
+<p>Reference:
+	https:#www.gnu.org/softwarecrystar/manual/html_node/Standard.html</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="STAR">
+        <strong>STAR</strong> = <code><span class="n">16</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Schily's tar format, which is incompatible with USTAR.
+This does not cover STAR extensions to the PAX format; these fall under
+the PAX format.</p>
+      </dd>
+      
+    
+  </dl>
+
+
+
+
+
+
+
+  <h2>Instance Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#gnu%3F-instance-method" class="signature"><strong>#gnu?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#has%28f2%3Aself%29-instance-method" class="signature"><strong>#has</strong>(f2 : <span class="k">self</span>)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#may_only_be%28f2%29-instance-method" class="signature"><strong>#may_only_be</strong>(f2)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#maybe%28f2%3Aself%29-instance-method" class="signature"><strong>#maybe</strong>(f2 : <span class="k">self</span>)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#must_not_be%28f2%29-instance-method" class="signature"><strong>#must_not_be</strong>(f2)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#none%3F-instance-method" class="signature"><strong>#none?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#pax%3F-instance-method" class="signature"><strong>#pax?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#star%3F-instance-method" class="signature"><strong>#star?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#ustar%3F-instance-method" class="signature"><strong>#ustar?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#v7%3F-instance-method" class="signature"><strong>#v7?</strong></a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+
+
+
+
+  <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="gnu?-instance-method">
+      <div class="signature">
+        
+        def <strong>gnu?</strong>
+
+        <a class="method-permalink" href="#gnu%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/format.cr#L84" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="has(f2:self)-instance-method">
+      <div class="signature">
+        
+        def <strong>has</strong>(f2 : <span class="k">self</span>)
+
+        <a class="method-permalink" href="#has%28f2%3Aself%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/format.cr#L90" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="may_only_be(f2)-instance-method">
+      <div class="signature">
+        
+        def <strong>may_only_be</strong>(f2)
+
+        <a class="method-permalink" href="#may_only_be%28f2%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/format.cr#L98" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="maybe(f2:self)-instance-method">
+      <div class="signature">
+        
+        def <strong>maybe</strong>(f2 : <span class="k">self</span>)
+
+        <a class="method-permalink" href="#maybe%28f2%3Aself%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/format.cr#L94" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="must_not_be(f2)-instance-method">
+      <div class="signature">
+        
+        def <strong>must_not_be</strong>(f2)
+
+        <a class="method-permalink" href="#must_not_be%28f2%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/format.cr#L102" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="none?-instance-method">
+      <div class="signature">
+        
+        def <strong>none?</strong>
+
+        <a class="method-permalink" href="#none%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/format.cr#L44" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="pax?-instance-method">
+      <div class="signature">
+        
+        def <strong>pax?</strong>
+
+        <a class="method-permalink" href="#pax%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/format.cr#L71" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="star?-instance-method">
+      <div class="signature">
+        
+        def <strong>star?</strong>
+
+        <a class="method-permalink" href="#star%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/format.cr#L88" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="ustar?-instance-method">
+      <div class="signature">
+        
+        def <strong>ustar?</strong>
+
+        <a class="method-permalink" href="#ustar%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/format.cr#L56" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="v7?-instance-method">
+      <div class="signature">
+        
+        def <strong>v7?</strong>
+
+        <a class="method-permalink" href="#v7%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/naqvis/crystar/blob/e928324915a45949207a9ed7bc2f9b807be0148e/src/tar/format.cr#L46" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>
