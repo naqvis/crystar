@@ -1,8 +1,7 @@
-[![Build Status](https://travis-ci.org/naqvis/crystar.svg?branch=master)](https://travis-ci.org/naqvis/crystar)
+# Crystal Tar (Crystar)
+![CI](https://github.com/naqvis/crystar/workflows/CI/badge.svg)
 [![GitHub release](https://img.shields.io/github/release/naqvis/crystar.svg)](https://github.com/naqvis/crystar/releases)
 [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://naqvis.github.io/crystar/)
-
-# Crystal Tar (Crystar)
 
 Shard `Crystar` implements access to tar archives.
 

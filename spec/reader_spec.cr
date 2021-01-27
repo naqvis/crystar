@@ -445,7 +445,7 @@ module Crystar
               else
                 IO.copy entry.io, data
               end
-              chksums << Digest::MD5.hexdigest data
+              chksums << Digest::MD5.hexdigest data.to_s
             end
 
             hdrs.size.should eq(v.headers.size)

@@ -1,10 +1,10 @@
 name: crystar
-version: 0.1.8
+version: 0.1.9
 description: |
   Shard Crystar implements access to tar archives. This shard aims to cover most variations of the format, including those produced by GNU and BSD tar tools.
 authors:
   - Ali Naqvi <syed.alinaqvi@gmail.com>
 
-crystal: 0.35.1
+crystal: 0.36.0
 
 license: MIT

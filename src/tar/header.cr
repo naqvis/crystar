@@ -426,7 +426,7 @@ module Crystar
     def initialize(@header)
     end
 
-    def size : UInt64
+    def size : Int64
       header.size
     end
 
