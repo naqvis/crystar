@@ -5,6 +5,6 @@ description: |
 authors:
   - Ali Naqvi <syed.alinaqvi@gmail.com>
 
-crystal: 0.36.0
+crystal: '>= 0.36.0, < 2.0.0'
 
 license: MIT
