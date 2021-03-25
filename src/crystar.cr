@@ -35,7 +35,7 @@ require "./tar/*"
 # end
 # ```
 module Crystar
-  VERSION = "0.1.9"
+  VERSION = "0.2.0"
 
   # Common Crystar exceptions
   class Error < Exception
