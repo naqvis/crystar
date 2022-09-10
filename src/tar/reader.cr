@@ -366,10 +366,10 @@ module Crystar
       def initialize(@io)
       end
 
-      abstract def read(b : Bytes) : Int
+      abstract def read(slice : Bytes) : Int
       abstract def write_to(w : IO) : Int
 
-      def write(b : Bytes) : Nil
+      def write(slice : Bytes) : Nil
         raise Error.new "Crystar Reader: Can't write"
       end
 
@@ -384,13 +384,13 @@ module Crystar
         super(@io)
       end
 
-      def read(b : Bytes) : Int32
-        b = b[...@nb] if b.size > @nb
+      def read(slice : Bytes) : Int32
+        slice = slice[...@nb] if slice.size > @nb
         n = 0
         eof = false
-        if b.size > 0
+        if slice.size > 0
           begin
-            n = @io.read(b)
+            n = @io.read(slice)
           rescue IO::EOFError
             eof = true
           end
@@ -418,37 +418,37 @@ module Crystar
         super(@fr)
       end
 
-      def read(b : Bytes) : Int32
-        finished = b.size >= logical_remaining
-        b = b[...logical_remaining] if finished
+      def read(slice : Bytes) : Int32
+        finished = slice.size >= logical_remaining
+        slice = slice[...logical_remaining] if finished
 
-        b0 = b
-        end_pos = @pos + b.size
+        b0 = slice
+        end_pos = @pos + slice.size
         eof = false
         while end_pos > @pos && !eof
           nf = 0 # Bytes read in fragment
           hole_start, hole_end = @sp[0].offset, @sp[0].end_of_offset
           if @pos < hole_start # In a data fragment
-            bf = b[...Math.min(b.size, hole_start - @pos)]
+            bf = slice[...Math.min(slice.size, hole_start - @pos)]
             begin
               nf = @fr.read_fully(bf)
             rescue IO::EOFError
               eof = true
             end
           else # In a hole fragment
-            bf = b[...Math.min(b.size, hole_end - @pos)]
+            bf = slice[...Math.min(slice.size, hole_end - @pos)]
             tmp = Bytes.new(bf.size)
             bf.copy_from(tmp.to_unsafe, bf.size)
             nf = bf.size
           end
-          b = b[nf..]
+          slice = slice[nf..]
           @pos += nf
           if @pos >= hole_end && @sp.size > 1
             @sp = @sp[1..] # Ensure last fragment always remains
           end
         end
 
-        n = b0.size - b.size
+        n = b0.size - slice.size
         raise Error.new("sparse file references non-existent data") if eof
         if logical_remaining == 0 && physical_remaining > 0
           raise Error.new("sparse file contains unreferenced data")
