@@ -419,8 +419,7 @@ module Crystar
     end
   end
 
-  # HeaderFileInfo extends File::Info
-  private struct HeaderFileInfo < File::Info
+  private struct HeaderFileInfo
     getter header : Header
 
     def initialize(@header)
