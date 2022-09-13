@@ -345,10 +345,10 @@ module Crystar
       def initialize(@io)
       end
 
-      abstract def write(b : Bytes) : Nil
+      abstract def write(slice : Bytes) : Nil
       abstract def read_from(r : IO) : Int
 
-      def read(b : Bytes)
+      def read(slice : Bytes)
         raise Error.new "Crystar Writer: Can't read"
       end
 
@@ -363,12 +363,12 @@ module Crystar
         super(@io)
       end
 
-      def write(b : Bytes) : Nil
-        overwrite = b.size > @nb
-        b = b[..@nb] if overwrite
-        if b.size > 0
-          @io.write(b)
-          @nb -= b.size
+      def write(slice : Bytes) : Nil
+        overwrite = slice.size > @nb
+        slice = slice[..@nb] if overwrite
+        if slice.size > 0
+          @io.write(slice)
+          @nb -= slice.size
         end
         raise ErrWriteTooLong.new "tar: write too long" if overwrite
       end
@@ -391,21 +391,21 @@ module Crystar
         super(@fw)
       end
 
-      def write(b : Bytes) : Nil
-        overwrite = b.size > logical_remaining
-        b = b[...logical_remaining] if overwrite
-        end_pos = @pos + b.size
+      def write(slice : Bytes) : Nil
+        overwrite = slice.size > logical_remaining
+        slice = slice[...logical_remaining] if overwrite
+        end_pos = @pos + slice.size
         too_long = false
         while end_pos > @pos && !too_long
           nf = 0 # Bytes written in fragment
           data_start, data_end = @sp[0].offset, @sp[0].end_of_offset
           if @pos < data_start # In a hole fragment
-            bf = b[...Math.min(b.size, data_start - @pos)]
+            bf = slice[...Math.min(slice.size, data_start - @pos)]
             tmp = Bytes.new(bf.size)
             bf.copy_from(tmp.to_unsafe, bf.size)
             nf = bf.size
           else # In a data fragment
-            bf = b[...Math.min(b.size, data_end - @pos)]
+            bf = slice[...Math.min(slice.size, data_end - @pos)]
             begin
               @fw.write(bf)
               nf = bf.size
@@ -413,7 +413,7 @@ module Crystar
               too_long = true
             end
           end
-          b = b[nf..]
+          slice = slice[nf..]
           @pos += nf
           if @pos >= data_end && @sp.size > 1
             @sp = @sp[1..] # Ensure last fragment always remains
