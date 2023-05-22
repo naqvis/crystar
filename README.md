@@ -83,7 +83,7 @@ files = [
 buf = IO::Memory.new
 Crystar::Writer.open(buf) do |tw|
   files.each do |f|
-    hdr = Header.new(
+    hdr = Crystar::Header.new(
       name: f[0],
       mode: 0o600_i64,
       size: f[1].size.to_i64

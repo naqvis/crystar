@@ -18,7 +18,7 @@ module Crystar
   #       name: "Your file Name",
   #       size: 100_i64,  # Contents size
   #       mode: 0o644_i64 # Permission and mode bits
-  #     # ..... Look into `Crystar::Header`
+  #       # ..... Look into `Crystar::Header`
   #     )
   #     tar.write_header hdr
   #     tar.write "your file contents".to_slice

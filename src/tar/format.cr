@@ -88,7 +88,7 @@ module Crystar
     STAR
 
     def has(f2 : self)
-      includes? f2
+      (self & f2) != None
     end
 
     def maybe(f2 : self)
